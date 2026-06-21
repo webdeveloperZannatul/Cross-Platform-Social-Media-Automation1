@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SocialFlow Pro — Social Media Automation Platform</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script>
+tailwind.config={darkMode:'class',theme:{extend:{colors:{primary:{50:'#EFF6FF',100:'#DBEAFE',200:'#BFDBFE',300:'#93C5FD',400:'#60A5FA',500:'#3B82F6',600:'#2563EB',700:'#1D4ED8',800:'#1E40AF',900:'#1E3A8A'},secondary:{50:'#ECFEFF',100:'#CFFAFE',200:'#A5F3FC',300:'#67E8F9',400:'#22D3EE',500:'#06B6D4',600:'#0891B2',700:'#0E7490'},accent:{50:'#F5F3FF',100:'#EDE9FE',200:'#DDD6FE',300:'#C4B5FD',400:'#A78BFA',500:'#8B5CF6',600:'#7C3AED',700:'#6D28D9'},success:{400:'#34D399',500:'#10B981',600:'#059669'},dark:{50:'#1E293B',100:'#1A2332',200:'#151D2E',300:'#111827',400:'#0F172A',500:'#0B1120',600:'#080E1A',700:'#050A14'},light:{50:'#FFFFFF',100:'#F8FAFC',200:'#F1F5F9',300:'#E2E8F0',400:'#CBD5E1',500:'#94A3B8',600:'#64748B',700:'#475569'}},fontFamily:{sans:['Inter','system-ui','sans-serif'],display:['Plus Jakarta Sans','system-ui','sans-serif']},animation:{'float':'float 6s ease-in-out infinite','float-delayed':'float 6s ease-in-out 3s infinite','glow':'glow 2s ease-in-out infinite alternate','slide-up':'slideUp .6s ease-out','slide-down':'slideDown .3s ease-out','fade-in':'fadeIn .5s ease-out','scale-in':'scaleIn .3s ease-out','spin-slow':'spin 20s linear infinite','pulse-slow':'pulse 4s ease-in-out infinite','shimmer':'shimmer 2s infinite','gradient':'gradient 8s ease infinite'},keyframes:{float:{'0%,100%':{transform:'translateY(0px)'},'50%':{transform:'translateY(-20px)'}},glow:{'0%':{boxShadow:'0 0 20px rgba(37,99,235,0.3)'},'100%':{boxShadow:'0 0 40px rgba(37,99,235,0.6)'}},slideUp:{'0%':{opacity:'0',transform:'translateY(30px)'},'100%':{opacity:'1',transform:'translateY(0)'}},slideDown:{'0%':{opacity:'0',transform:'translateY(-10px)'},'100%':{opacity:'1',transform:'translateY(0)'}},fadeIn:{'0%':{opacity:'0'},'100%':{opacity:'1'}},scaleIn:{'0%':{opacity:'0',transform:'scale(.95)'},'100%':{opacity:'1',transform:'scale(1)'}},shimmer:{'0%':{backgroundPosition:'-200% 0'},'100%':{backgroundPosition:'200% 0'}},gradient:{'0%,100%':{backgroundPosition:'0% 50%'},'50%':{backgroundPosition:'100% 50%'}}}}}}
+</script>
+<style>
+*{scrollbar-width:thin;scrollbar-color:#334155 transparent}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:#475569}
+html.dark ::-webkit-scrollbar-thumb{background:#334155}
+html:not(.dark) ::-webkit-scrollbar-thumb{background:#CBD5E1}
+.glass{backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%)}
+.glass-sm{backdrop-filter:blur(12px) saturate(150%);-webkit-backdrop-filter:blur(12px) saturate(150%)}
+.glass-card{border:1px solid rgba(255,255,255,.08)}
+html:not(.dark) .glass-card{border:1px solid rgba(0,0,0,.06)}
+.gradient-text{background:linear-gradient(135deg,#2563EB,#06B6D4,#8B5CF6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.gradient-bg{background:linear-gradient(135deg,#2563EB 0%,#06B6D4 50%,#8B5CF6 100%);background-size:200% 200%}
+.hero-glow{position:absolute;width:600px;height:600px;border-radius:50%;filter:blur(120px);opacity:.15;pointer-events:none}
+html:not(.dark) .hero-glow{opacity:.1}
+.card-hover{transition:all .3s cubic-bezier(.4,0,.2,1)}
+.card-hover:hover{transform:translateY(-4px);box-shadow:0 20px 40px -12px rgba(0,0,0,.15)}
+html.dark .card-hover:hover{box-shadow:0 20px 40px -12px rgba(0,0,0,.4)}
+.sidebar-item{transition:all .2s ease}
+.sidebar-item:hover,.sidebar-item.active{background:rgba(37,99,235,.1);color:#2563EB}
+html.dark .sidebar-item:hover,html.dark .sidebar-item.active{background:rgba(37,99,235,.15);color:#60A5FA}
+.status-draft{background:#F59E0B;color:#FFF}
+.status-review{background:#8B5CF6;color:#FFF}
+.status-approved{background:#2563EB;color:#FFF}
+.status-scheduled{background:#06B6D4;color:#FFF}
+.status-published{background:#10B981;color:#FFF}
+.status-failed{background:#EF4444;color:#FFF}
+.cal-cell{min-height:100px;transition:all .2s}
+.cal-cell:hover{background:rgba(37,99,235,.05)}
+.cal-post{font-size:11px;padding:2px 6px;border-radius:4px;margin-bottom:2px;cursor:pointer;transition:all .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cal-post:hover{transform:scale(1.02);filter:brightness(1.1)}
+.toast{animation:slideDown .3s ease-out,fadeIn .3s ease-out}
+.platform-fb{color:#1877F2}.platform-ig{color:#E4405F}.platform-tw{color:#1DA1F2}.platform-tt{color:#000}.platform-yt{color:#FF0000}
+html.dark .platform-tt{color:#FFF}
+.tab-active{border-bottom:2px solid #2563EB;color:#2563EB;font-weight:600}
+html.dark .tab-active{color:#60A5FA;border-color:#60A5FA}
+.workflow-step{position:relative}
+.workflow-step:not(:last-child)::after{content:'';position:absolute;top:50%;right:-16px;width:32px;height:2px;background:linear-gradient(90deg,#2563EB,#06B6D4)}
+@media(max-width:768px){.workflow-step:not(:last-child)::after{display:none}}
+.mobile-menu-overlay{transition:opacity .3s}
+.sidebar-mobile{transition:transform .3s cubic-bezier(.4,0,.2,1)}
+input:focus,textarea:focus,select:focus{outline:none;box-shadow:0 0 0 2px rgba(37,99,235,.3)}
+.btn-primary{background:linear-gradient(135deg,#2563EB,#1D4ED8);transition:all .2s}
+.btn-primary:hover{background:linear-gradient(135deg,#3B82F6,#2563EB);transform:translateY(-1px);box-shadow:0 4px 12px rgba(37,99,235,.4)}
+.btn-secondary{border:1px solid rgba(37,99,235,.3);color:#2563EB;transition:all .2s}
+.btn-secondary:hover{background:rgba(37,99,235,.05);border-color:#2563EB}
+html.dark .btn-secondary{border-color:rgba(96,165,250,.3);color:#60A5FA}
+html.dark .btn-secondary:hover{background:rgba(96,165,250,.1);border-color:#60A5FA}
+.chart-container{position:relative;width:100%}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body class="font-sans bg-dark-400 text-light-200 dark:bg-dark-400 dark:text-light-200 transition-colors duration-300">
+<!-- Toast Container -->
+<div id="toast-container" class="fixed top-4 right-4 z-[9999] flex flex-col gap-2" aria-live="polite"></div>
+
+<!-- ==================== LANDING PAGE ==================== -->
+<div id="landing-page">
+<!-- Nav -->
+<nav class="fixed top-0 w-full z-50 glass-sm bg-dark-400/80 dark:bg-dark-400/80 border-b border-white/5 dark:border-white/5 transition-all" id="landing-nav">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg gradient-bg flex items-center justify-center">
+<i class="fa-solid fa-bolt text-white text-sm"></i>
+</div>
+<span class="font-display font-bold text-lg text-white">SocialFlow <span class="text-primary-400">Pro</span></span>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a href="#features" class="text-sm text-light-500 hover:text-white transition">Features</a>
+<a href="#how-it-works" class="text-sm text-light-500 hover:text-white transition">How It Works</a>
+<a href="#pricing" class="text-sm text-light-500 hover:text-white transition">Pricing</a>
+<a href="#" class="text-sm text-light-500 hover:text-white transition">Blog</a>
+</div>
+<div class="flex items-center gap-3">
+<button onclick="toggleTheme()" class="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center transition" aria-label="Toggle theme">
+<i class="fa-solid fa-moon text-sm text-light-400 dark:hidden"></i>
+<i class="fa-solid fa-sun text-sm text-light-400 hidden dark:inline"></i>
+</button>
+<a href="#" onclick="showView('dashboard');return false" class="hidden sm:inline-flex text-sm text-light-500 hover:text-white transition">Sign In</a>
+<button onclick="showView('dashboard')" class="btn-primary text-sm font-semibold text-white px-5 py-2 rounded-lg">Start Free Trial</button>
+<button onclick="toggleMobileMenu()" class="md:hidden w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center" aria-label="Menu">
+<i class="fa-solid fa-bars text-light-400"></i>
+</button>
+</div>
+</div>
+</div>
+</nav>
+
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="fixed inset-0 z-[60] hidden">
+<div class="mobile-menu-overlay absolute inset-0 bg-black/60" onclick="toggleMobileMenu()"></div>
+<div class="sidebar-mobile absolute right-0 top-0 h-full w-72 bg-dark-300 dark:bg-dark-300 p-6 transform translate-x-full">
+<div class="flex justify-between items-center mb-8">
+<span class="font-display font-bold text-white">Menu</span>
+<button onclick="toggleMobileMenu()" class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center" aria-label="Close menu"><i class="fa-solid fa-xmark text-light-400"></i></button>
+</div>
+<div class="flex flex-col gap-4">
+<a href="#features" onclick="toggleMobileMenu()" class="text-light-400 hover:text-white transition py-2">Features</a>
+<a href="#how-it-works" onclick="toggleMobileMenu()" class="text-light-400 hover:text-white transition py-2">How It Works</a>
+<a href="#pricing" onclick="toggleMobileMenu()" class="text-light-400 hover:text-white transition py-2">Pricing</a>
+<a href="#" class="text-light-400 hover:text-white transition py-2">Blog</a>
+<hr class="border-white/10">
+<a href="#" onclick="showView('dashboard');toggleMobileMenu();return false" class="text-light-400 hover:text-white transition py-2">Sign In</a>
+<button onclick="showView('dashboard');toggleMobileMenu()" class="btn-primary text-sm font-semibold text-white px-5 py-3 rounded-lg w-full mt-2">Start Free Trial</button>
+</div>
+</div>
+</div>
+
+<!-- Hero -->
+<section class="relative min-h-screen flex items-center pt-16 overflow-hidden">
+<div class="hero-glow bg-primary-600 top-20 -left-40"></div>
+<div class="hero-glow bg-accent-600 top-40 right-0"></div>
+<div class="hero-glow bg-secondary-600 bottom-0 left-1/3"></div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
+<div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+<div class="animate-slide-up">
+<div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary-600/10 border border-primary-600/20 mb-6">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-400 animate-pulse"></span>
+<span class="text-xs font-medium text-primary-400">Now with AI-Powered Scheduling</span>
+</div>
+<h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
+Manage Every Social Platform From <span class="gradient-text">One Dashboard</span>
+</h1>
+<p class="text-lg text-light-500 mb-8 max-w-lg">Automate publishing, track performance, and grow your audience with a single powerful platform.</p>
+<div class="flex flex-wrap gap-4 mb-10">
+<button onclick="showView('dashboard')" class="btn-primary text-sm font-semibold text-white px-7 py-3.5 rounded-xl flex items-center gap-2">
+Start Free Trial <i class="fa-solid fa-arrow-right text-xs"></i>
+</button>
+<button class="btn-secondary text-sm font-semibold px-7 py-3.5 rounded-xl flex items-center gap-2">
+<i class="fa-solid fa-play text-xs"></i> Book Demo
+</button>
+</div>
+<div class="flex items-center gap-6 text-sm text-light-500">
+<div class="flex items-center gap-2"><i class="fa-solid fa-check text-success-500"></i> 14-day free trial</div>
+<div class="flex items-center gap-2"><i class="fa-solid fa-check text-success-500"></i> No credit card</div>
+<div class="flex items-center gap-2"><i class="fa-solid fa-check text-success-500"></i> Cancel anytime</div>
+</div>
+</div>
+<div class="animate-slide-up relative" style="animation-delay:.2s">
+<div class="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-primary-600/10">
+<div class="bg-dark-300 p-1">
+<div class="flex items-center gap-1.5 px-3 py-2">
+<div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+<div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+<div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+<span class="ml-3 text-xs text-light-600">SocialFlow Pro — Dashboard</span>
+</div>
+</div>
+<img src="https://picsum.photos/seed/socialdash42/800/500.jpg" alt="Dashboard Preview" class="w-full h-auto block" loading="lazy">
+<div class="absolute inset-0 bg-gradient-to-t from-dark-400/60 via-transparent to-transparent"></div>
+</div>
+<div class="absolute -bottom-4 -right-4 w-40 h-40 rounded-xl bg-accent-600/20 blur-2xl animate-float"></div>
+<div class="absolute -top-4 -left-4 w-32 h-32 rounded-xl bg-secondary-600/20 blur-2xl animate-float-delayed"></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Trusted By -->
+<section class="py-12 border-t border-white/5">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<p class="text-center text-xs font-medium text-light-600 uppercase tracking-widest mb-8">Trusted by 12,000+ brands worldwide</p>
+<div class="flex flex-wrap justify-center items-center gap-8 sm:gap-12 opacity-40">
+<span class="font-display font-bold text-xl text-light-400">Spotify</span>
+<span class="font-display font-bold text-xl text-light-400">Notion</span>
+<span class="font-display font-bold text-xl text-light-400">Stripe</span>
+<span class="font-display font-bold text-xl text-light-400">Vercel</span>
+<span class="font-display font-bold text-xl text-light-400">Linear</span>
+<span class="font-display font-bold text-xl text-light-400">Figma</span>
+</div>
+</div>
+</section>
+
+<!-- Features -->
+<section id="features" class="py-24 relative">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16">
+<span class="text-xs font-semibold text-primary-400 uppercase tracking-widest">Features</span>
+<h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white mt-3 mb-4">Everything You Need to Scale Social</h2>
+<p class="text-light-500 max-w-2xl mx-auto">A complete suite of tools designed for modern social media teams.</p>
+</div>
+<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="glass-card glass rounded-2xl p-6 bg-white/[.03] dark:bg-white/[.03] card-hover group">
+<div class="w-12 h-12 rounded-xl bg-primary-600/15 flex items-center justify-center mb-5 group-hover:scale-110 transition"><i class="fa-solid fa-share-nodes text-primary-400 text-lg"></i></div>
+<h3 class="font-display font-bold text-white text-lg mb-2">Cross-Platform Publishing</h3>
+<p class="text-sm text-light-500 mb-4">Publish to Facebook, Instagram, X, TikTok, and YouTube simultaneously.</p>
+<div class="flex gap-3">
+<span class="w-8 h-8 rounded-lg bg-[#1877F2]/15 flex items-center justify-center"><i class="fa-brands fa-facebook-f text-[#1877F2] text-xs"></i></span>
+<span class="w-8 h-8 rounded-lg bg-[#E4405F]/15 flex items-center justify-center"><i class="fa-brands fa-instagram text-[#E4405F] text-xs"></i></span>
+<span class="w-8 h-8 rounded-lg bg-[#1DA1F2]/15 flex items-center justify-center"><i class="fa-brands fa-x-twitter text-[#1DA1F2] text-xs"></i></span>
+<span class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center"><i class="fa-brands fa-tiktok text-white text-xs"></i></span>
+<span class="w-8 h-8 rounded-lg bg-[#FF0000]/15 flex items-center justify-center"><i class="fa-brands fa-youtube text-[#FF0000] text-xs"></i></span>
+</div>
+</div>
+<div class="glass-card glass rounded-2xl p-6 bg-white/[.03] dark:bg-white/[.03] card-hover group">
+<div class="w-12 h-12 rounded-xl bg-secondary-600/15 flex items-center justify-center mb-5 group-hover:scale-110 transition"><i class="fa-solid fa-calendar-check text-secondary-400 text-lg"></i></div>
+<h3 class="font-display font-bold text-white text-lg mb-2">Smart Scheduling</h3>
+<p class="text-sm text-light-500 mb-4">Drag-and-drop calendar with AI-powered best-time recommendations.</p>
+<div class="flex gap-2 flex-wrap">
+<span class="text-xs px-2.5 py-1 rounded-full bg-secondary-600/10 text-secondary-400">Queue Mgmt</span>
+<span class="text-xs px-2.5 py-1 rounded-full bg-secondary-600/10 text-secondary-400">Drag & Drop</span>
+<span class="text-xs px-2.5 py-1 rounded-full bg-secondary-600/10 text-secondary-400">Auto-Schedule</span>
+</div>
+</div>
+<div class="glass-card glass rounded-2xl p-6 bg-white/[.03] dark:bg-white/[.03] card-hover group">
+<div class="w-12 h-12 rounded-xl bg-accent-600/15 flex items-center justify-center mb-5 group-hover:scale-110 transition"><i class="fa-solid fa-code-branch text-accent-400 text-lg"></i></div>
+<h3 class="font-display font-bold text-white text-lg mb-2">Approval Workflow</h3>
+<p class="text-sm text-light-500 mb-4">Draft, review, approve, and publish with team collaboration.</p>
+<div class="flex items-center gap-2">
+<span class="text-xs px-2.5 py-1 rounded-full status-draft">Draft</span>
+<i class="fa-solid fa-arrow-right text-[10px] text-light-600"></i>
+<span class="text-xs px-2.5 py-1 rounded-full status-review">Review</span>
+<i class="fa-solid fa-arrow-right text-[10px] text-light-600"></i>
+<span class="text-xs px-2.5 py-1 rounded-full status-approved">Approved</span>
+<i class="fa-solid fa-arrow-right text-[10px] text-light-600"></i>
+<span class="text-xs px-2.5 py-1 rounded-full status-published">Published</span>
+</div>
+</div>
+<div class="glass-card glass rounded-2xl p-6 bg-white/[.03] dark:bg-white/[.03] card-hover group">
+<div class="w-12 h-12 rounded-xl bg-success-500/15 flex items-center justify-center mb-5 group-hover:scale-110 transition"><i class="fa-solid fa-chart-line text-success-400 text-lg"></i></div>
+<h3 class="font-display font-bold text-white text-lg mb-2">Analytics Dashboard</h3>
+<p class="text-sm text-light-500 mb-4">Track reach, impressions, engagement, followers, and CTR in real time.</p>
+<div class="grid grid-cols-3 gap-2 text-center">
+<div class="bg-white/[.03] rounded-lg p-2"><div class="text-sm font-bold text-white">2.4M</div><div class="text-[10px] text-light-600">Reach</div></div>
+<div class="bg-white/[.03] rounded-lg p-2"><div class="text-sm font-bold text-white">8.7%</div><div class="text-[10px] text-light-600">Engage</div></div>
+<div class="bg-white/[.03] rounded-lg p-2"><div class="text-sm font-bold text-white">142K</div><div class="text-[10px] text-light-600">Followers</div></div>
+</div>
+</div>
+<div class="glass-card glass rounded-2xl p-6 bg-white/[.03] dark:bg-white/[.03] card-hover group">
+<div class="w-12 h-12 rounded-xl bg-yellow-500/15 flex items-center justify-center mb-5 group-hover:scale-110 transition"><i class="fa-solid fa-wand-magic-sparkles text-yellow-400 text-lg"></i></div>
+<h3 class="font-display font-bold text-white text-lg mb-2">AI Caption Assistant</h3>
+<p class="text-sm text-light-500 mb-4">Generate captions, hashtags, and CTAs with AI in seconds.</p>
+<div class="bg-white/[.03] rounded-lg p-3 text-xs text-light-400 italic">"Boost your engagement with AI-generated captions tailored to each platform..."</div>
+</div>
+<div class="glass-card glass rounded-2xl p-6 bg-white/[.03] dark:bg-white/[.03] card-hover group">
+<div class="w-12 h-12 rounded-xl bg-red-500/15 flex items-center justify-center mb-5 group-hover:scale-110 transition"><i class="fa-solid fa-file-export text-red-400 text-lg"></i></div>
+<h3 class="font-display font-bold text-white text-lg mb-2">Export Reports</h3>
+<p class="text-sm text-light-500 mb-4">Download PDF & CSV reports or schedule automated email delivery.</p>
+<div class="flex gap-2">
+<span class="text-xs px-3 py-1.5 rounded-lg bg-red-500/10 text-red-400 flex items-center gap-1.5"><i class="fa-solid fa-file-pdf"></i> PDF</span>
+<span class="text-xs px-3 py-1.5 rounded-lg bg-green-500/10 text-green-400 flex items-center gap-1.5"><i class="fa-solid fa-file-csv"></i> CSV</span>
+<span class="text-xs px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-400 flex items-center gap-1.5"><i class="fa-solid fa-envelope"></i> Email</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- How It Works -->
+<section id="how-it-works" class="py-24 relative">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16">
+<span class="text-xs font-semibold text-secondary-400 uppercase tracking-widest">How It Works</span>
+<h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white mt-3 mb-4">Up and Running in Minutes</h2>
+</div>
+<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+<div class="text-center group">
+<div class="w-16 h-16 rounded-2xl gradient-bg mx-auto mb-5 flex items-center justify-center text-white text-xl font-display font-bold group-hover:scale-110 transition">1</div>
+<h3 class="font-display font-bold text-white mb-2">Connect Accounts</h3>
+<p class="text-sm text-light-500">Link your social profiles with OAuth in under 2 minutes.</p>
+</div>
+<div class="text-center group">
+<div class="w-16 h-16 rounded-2xl gradient-bg mx-auto mb-5 flex items-center justify-center text-white text-xl font-display font-bold group-hover:scale-110 transition">2</div>
+<h3 class="font-display font-bold text-white mb-2">Create Content</h3>
+<p class="text-sm text-light-500">Use the AI editor to craft captions, upload media, and select platforms.</p>
+</div>
+<div class="text-center group">
+<div class="w-16 h-16 rounded-2xl gradient-bg mx-auto mb-5 flex items-center justify-center text-white text-xl font-display font-bold group-hover:scale-110 transition">3</div>
+<h3 class="font-display font-bold text-white mb-2">Schedule & Approve</h3>
+<p class="text-sm text-light-500">Drag posts to the calendar and route through approval workflows.</p>
+</div>
+<div class="text-center group">
+<div class="w-16 h-16 rounded-2xl gradient-bg mx-auto mb-5 flex items-center justify-center text-white text-xl font-display font-bold group-hover:scale-110 transition">4</div>
+<h3 class="font-display font-bold text-white mb-2">Analyze & Grow</h3>
+<p class="text-sm text-light-500">Track performance with real-time analytics and export reports.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Campaign Showcase -->
+<section class="py-24 relative overflow-hidden">
+<div class="hero-glow bg-accent-600 top-0 right-0 w-[400px] h-[400px]"></div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+<div class="grid lg:grid-cols-2 gap-12 items-center">
+<div>
+<span class="text-xs font-semibold text-accent-400 uppercase tracking-widest">Campaign Spotlight</span>
+<h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white mt-3 mb-6">Cancel910Gas Initiative</h2>
+<p class="text-light-500 mb-8">Driving subscribers to youtube.com/@cancel910gas through multi-platform campaigns.</p>
+<div class="grid grid-cols-2 gap-4 mb-8">
+<div class="glass-card glass rounded-xl p-4 bg-white/[.03]"><div class="text-2xl font-display font-bold text-white">1.2M</div><div class="text-xs text-light-500">Campaign Reach</div></div>
+<div class="glass-card glass rounded-xl p-4 bg-white/[.03]"><div class="text-2xl font-display font-bold text-success-400">+47K</div><div class="text-xs text-light-500">Subscriber Referrals</div></div>
+<div class="glass-card glass rounded-xl p-4 bg-white/[.03]"><div class="text-2xl font-display font-bold text-secondary-400">12.3%</div><div class="text-xs text-light-500">Engagement Rate</div></div>
+<div class="glass-card glass rounded-xl p-4 bg-white/[.03]"><div class="text-2xl font-display font-bold text-accent-400">5</div><div class="text-xs text-light-500">Platforms Active</div></div>
+</div>
+<button onclick="showView('dashboard')" class="btn-primary text-sm font-semibold text-white px-6 py-3 rounded-xl">View Full Dashboard</button>
+</div>
+<div class="space-y-3">
+<div class="glass-card glass rounded-xl p-4 bg-white/[.03] flex items-start gap-4">
+<div class="w-10 h-10 rounded-lg bg-[#1877F2]/15 flex items-center justify-center shrink-0"><i class="fa-brands fa-facebook-f text-[#1877F2]"></i></div>
+<div><div class="text-xs text-light-600 mb-1">Facebook — Published</div><p class="text-sm text-light-300">Big Oil still uses 9/10-cent pricing. It's time for change. Join the movement...</p></div>
+</div>
+<div class="glass-card glass rounded-xl p-4 bg-white/[.03] flex items-start gap-4">
+<div class="w-10 h-10 rounded-lg bg-[#1DA1F2]/15 flex items-center justify-center shrink-0"><i class="fa-brands fa-x-twitter text-[#1DA1F2]"></i></div>
+<div><div class="text-xs text-light-600 mb-1">X — Published</div><p class="text-sm text-light-300">The 9/10 gas price has lasted for decades. Let's end it together. Subscribe and share.</p></div>
+</div>
+<div class="glass-card glass rounded-xl p-4 bg-white/[.03] flex items-start gap-4">
+<div class="w-10 h-10 rounded-lg bg-[#E4405F]/15 flex items-center justify-center shrink-0"><i class="fa-brands fa-instagram text-[#E4405F]"></i></div>
+<div><div class="text-xs text-light-600 mb-1">Instagram — Carousel</div><p class="text-sm text-light-300">Explaining 9/10 pricing: What it is, why it remains, and how you can help...</p></div>
+</div>
+<div class="glass-card glass rounded-xl p-4 bg-white/[.03] flex items-start gap-4">
+<div class="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center shrink-0"><i class="fa-brands fa-tiktok text-white"></i></div>
+<div><div class="text-xs text-light-600 mb-1">TikTok — Video Campaign</div><p class="text-sm text-light-300">Short educational video series exposing the 9/10 gas pricing trick...</p></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Pricing -->
+<section id="pricing" class="py-24">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16">
+<span class="text-xs font-semibold text-success-400 uppercase tracking-widest">Pricing</span>
+<h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white mt-3 mb-4">Simple, Transparent Pricing</h2>
+</div>
+<div class="grid sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
+<div class="glass-card glass rounded-2xl p-6 bg-white/[.03] card-hover">
+<div class="text-sm font-semibold text-light-500 mb-1">Starter</div>
+<div class="flex items-baseline gap-1 mb-4"><span class="text-4xl font-display font-bold text-white">$19</span><span class="text-sm text-light-500">/mo</span></div>
+<ul class="space-y-2.5 text-sm text-light-400 mb-6">
+<li class="flex items-center gap-2"><i class="fa-solid fa-check text-success-500 text-xs"></i> 3 Social Accounts</li>
+<li class="flex items-center gap-2"><i class="fa-solid fa-check text-success-500 text-xs"></i> 50 Posts/month</li>
+<li class="flex items-center gap-2"><i class="fa-solid fa-check text-success-500 text-xs"></i> Basic Analytics</li>
+<li class="flex items-center gap-2"><i class="fa-solid fa-check text-success-500 text-xs"></i> CSV Export</li>
+</ul>
+<button onclick="showView('dashboard')" class="btn-secondary w-full py-2.5 rounded-xl text-sm font-semibold">Get Started</button>
+</div>
+<div class="glass-card glass rounded-2xl p-6 bg-primary-600/10 border-primary-600/30 card-hover relative">
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 text-xs font-bold text-white bg-primary-600 px-3 py-1 rounded-full">Most Popular</div>
+<div class="text-sm font-semibold text-primary-400 mb-1">Professional</div>
+<div class="flex items-baseline gap-1 mb-4"><span class="text-4xl font-display font-bold text-white">$49</span><span class="text-sm text-light-500">/mo</span></div>
+<ul class="space-y-2.5 text-sm text-light-400 mb-6">
+<li class="flex items-center gap-2"><i class="fa-solid fa-check text-success-500 text-xs"></i> 10 Social Accounts</li>
+<li class="flex items-center gap-2"><i class="fa-solid fa-check text-success-500 text-xs"></i> Unlimited Posts</li>
+<li class="flex items-center gap-2"><i class="fa-solid fa-check text-success-500 text-xs"></i> Advanced Analytics</li>
+<li class="flex items-center gap-2"><i class="fa-solid fa-check text-success-500 text-xs"></i> AI Caption Assistant</li>
+<li class="flex items-center gap-2"><i class="fa-solid fa-check text-success-500 text-xs"></i> PDF & CSV Reports</li>
+</ul>
+<button onclick="showView('dashboard')" class="btn-primary w-full py-2.5 rounded-xl text-sm font-semibold text-white">Get Started</button>
+</div>
+<div class="glass-card glass rounded-2xl p-6 bg-white/[.03] card-hover">
+<div class="text-sm font-semibold text-light-500 mb-1">Enterprise</div>
+<div class="flex items-baseline gap-1 mb-4"><span class="text-4xl font-display font-bold text-white">$149</span><span class="text-sm text-light-500">/mo</span></div>
+<ul class="space-y-2.5 text-sm text-light-400 mb-6">
+<li class="flex items-center gap-2"><i class="fa-solid fa-check text-success-500 text-xs"></i> Unlimited Accounts</li>
+<li class="flex items-center gap-2"><i class="fa-solid fa-check text-success-500 text-xs"></i> Unlimited Posts</li>
+<li class="flex items-center gap-2"><i class="fa-solid fa-check text-success-500 text-xs"></i> Custom Branding</li>
+<li class="flex items-center gap-2"><i class="fa-solid fa-check text-success-500 text-xs"></i> Priority Support</li>
+<li class="flex items-center gap-2"><i class="fa-solid fa-check text-success-500 text-xs"></i> SSO & API Access</li>
+</ul>
+<button onclick="showView('dashboard')" class="btn-secondary w-full py-2.5 rounded-xl text-sm font-semibold">Contact Sales</button>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Footer -->
+<footer class="py-16 border-t border-white/5">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
+<div class="lg:col-span-2">
+<div class="flex items-center gap-2 mb-4">
+<div class="w-8 h-8 rounded-lg gradient-bg flex items-center justify-center"><i class="fa-solid fa-bolt text-white text-sm"></i></div>
+<span class="font-display font-bold text-lg text-white">SocialFlow <span class="text-primary-400">Pro</span></span>
+</div>
+<p class="text-sm text-light-500 max-w-sm mb-4">The all-in-one social media automation platform for modern teams. Publish, analyze, and grow.</p>
+<div class="flex gap-3">
+<a href="#" class="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center transition" aria-label="Twitter"><i class="fa-brands fa-x-twitter text-light-500 text-sm"></i></a>
+<a href="#" class="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center transition" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in text-light-500 text-sm"></i></a>
+<a href="#" class="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center transition" aria-label="GitHub"><i class="fa-brands fa-github text-light-500 text-sm"></i></a>
+<a href="#" class="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center transition" aria-label="YouTube"><i class="fa-brands fa-youtube text-light-500 text-sm"></i></a>
+</div>
+</div>
+<div>
+<h4 class="font-semibold text-white text-sm mb-4">Product</h4>
+<ul class="space-y-2 text-sm text-light-500">
+<li><a href="#features" class="hover:text-white transition">Features</a></li>
+<li><a href="#pricing" class="hover:text-white transition">Pricing</a></li>
+<li><a href="#" class="hover:text-white transition">Integrations</a></li>
+<li><a href="#" class="hover:text-white transition">API Docs</a></li>
+<li><a href="#" class="hover:text-white transition">Changelog</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-semibold text-white text-sm mb-4">Company</h4>
+<ul class="space-y-2 text-sm text-light-500">
+<li><a href="#" class="hover:text-white transition">About</a></li>
+<li><a href="#" class="hover:text-white transition">Blog</a></li>
+<li><a href="#" class="hover:text-white transition">Careers</a></li>
+<li><a href="#" class="hover:text-white transition">Press</a></li>
+<li><a href="#" class="hover:text-white transition">Contact</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-semibold text-white text-sm mb-4">Legal</h4>
+<ul class="space-y-2 text-sm text-light-500">
+<li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
+<li><a href="#" class="hover:text-white transition">Terms of Service</a></li>
+<li><a href="#" class="hover:text-white transition">Cookie Policy</a></li>
+<li><a href="#" class="hover:text-white transition">GDPR</a></li>
+<li><a href="#" class="hover:text-white transition">Security</a></li>
+</ul>
+</div>
+</div>
+<div class="pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4">
+<p class="text-xs text-light-600">&copy; 2025 SocialFlow Pro. All rights reserved. Developed by Zannatul.</p>
+<div class="flex items-center gap-4 text-xs text-light-600">
+<span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-success-500 animate-pulse"></span> All systems operational</span>
+</div>
+</div>
+</div>
+</footer>
+</div>
+
+<!-- ==================== DASHBOARD ==================== -->
+<div id="dashboard-page" class="hidden min-h-screen flex">
+<!-- Sidebar -->
+<aside id="sidebar" class="fixed lg:sticky top-0 left-0 h-screen w-64 bg-dark-500 dark:bg-dark-500 border-r border-white/5 z-40 flex flex-col shrink-0 transform -translate-x-full lg:translate-x-0 transition-transform duration-300">
+<div class="p-5 flex items-center gap-2 border-b border-white/5">
+<div class="w-8 h-8 rounded-lg gradient-bg flex items-center justify-center"><i class="fa-solid fa-bolt text-white text-sm"></i></div>
+<span class="font-display font-bold text-white">SocialFlow <span class="text-primary-400">Pro</span></span>
+</div>
+<nav class="flex-1 p-3 space-y-1 overflow-y-auto" role="navigation" aria-label="Main navigation">
+<button onclick="switchDashTab('overview')" class="sidebar-item active w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-left" data-tab="overview"><i class="fa-solid fa-grid-2 w-5 text-center"></i> Overview</button>
+<button onclick="switchDashTab('calendar')" class="sidebar-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-left" data-tab="calendar"><i class="fa-solid fa-calendar-days w-5 text-center"></i> Calendar</button>
+<button onclick="switchDashTab('posts')" class="sidebar-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-left" data-tab="posts"><i class="fa-solid fa-pen-to-square w-5 text-center"></i> Posts</button>
+<button onclick="switchDashTab('content')" class="sidebar-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-left" data-tab="content"><i class="fa-solid fa-photo-film w-5 text-center"></i> Content Library</button>
+<button onclick="switchDashTab('campaigns')" class="sidebar-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-left" data-tab="campaigns"><i class="fa-solid fa-bullhorn w-5 text-center"></i> Campaigns</button>
+<button onclick="switchDashTab('analytics')" class="sidebar-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-left" data-tab="analytics"><i class="fa-solid fa-chart-mixed w-5 text-center"></i> Analytics</button>
+<button onclick="switchDashTab('reports')" class="sidebar-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-left" data-tab="reports"><i class="fa-solid fa-file-chart-pie w-5 text-center"></i> Reports</button>
+<button onclick="switchDashTab('team')" class="sidebar-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-left" data-tab="team"><i class="fa-solid fa-users w-5 text-center"></i> Team</button>
+<button onclick="switchDashTab('accounts')" class="sidebar-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-left" data-tab="accounts"><i class="fa-solid fa-plug w-5 text-center"></i> Accounts</button>
+<button onclick="switchDashTab('admin')" class="sidebar-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-left" data-tab="admin"><i class="fa-solid fa-shield-halved w-5 text-center"></i> Admin Panel</button>
+</nav>
+<div class="p-3 border-t border-white/5">
+<button onclick="switchDashTab('settings')" class="sidebar-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-left" data-tab="settings"><i class="fa-solid fa-gear w-5 text-center"></i> Settings</button>
+</div>
+</aside>
+
+<!-- Sidebar overlay for mobile -->
+<div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-30 hidden lg:hidden" onclick="toggleSidebar()"></div>
+
+<!-- Main Content -->
+<div class="flex-1 min-w-0 flex flex-col">
+<!-- Top Bar -->
+<header class="sticky top-0 z-20 glass-sm bg-dark-400/80 dark:bg-dark-400/80 border-b border-white/5">
+<div class="flex items-center justify-between px-4 lg:px-6 h-14">
+<div class="flex items-center gap-3">
+<button onclick="toggleSidebar()" class="lg:hidden w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center" aria-label="Toggle sidebar"><i class="fa-solid fa-bars text-light-400 text-sm"></i></button>
+<div class="relative hidden sm:block">
+<i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-light-600 text-xs"></i>
+<input type="text" placeholder="Search posts, campaigns..." class="w-64 pl-9 pr-4 py-2 rounded-lg bg-white/5 border border-white/5 text-sm text-light-200 placeholder-light-600 transition" aria-label="Search">
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button onclick="toggleTheme()" class="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center transition" aria-label="Toggle theme"><i class="fa-solid fa-moon text-sm text-light-400 dark:hidden"></i><i class="fa-solid fa-sun text-sm text-light-400 hidden dark:inline"></i></button>
+<button class="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center transition relative" aria-label="Notifications" onclick="showToast('No new notifications','info')">
+<i class="fa-solid fa-bell text-sm text-light-400"></i>
+<span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-red-500"></span>
+</button>
+<div class="w-px h-6 bg-white/10 mx-1 hidden sm:block"></div>
+<div class="flex items-center gap-2 cursor-pointer" onclick="showToast('Profile settings coming soon','info')">
+<div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center text-white text-xs font-bold">JD</div>
+<span class="text-sm font-medium text-light-200 hidden sm:block">John Doe</span>
+<i class="fa-solid fa-chevron-down text-[10px] text-light-500 hidden sm:block"></i>
+</div>
+</div>
+</div>
+</header>
+
+<!-- Dashboard Content -->
+<main class="flex-1 p-4 lg:p-6 overflow-y-auto" id="dash-content">
+
+<!-- OVERVIEW TAB -->
+<div id="tab-overview" class="dash-tab">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+<div>
+<h1 class="font-display text-2xl font-bold text-white">Overview</h1>
+<p class="text-sm text-light-500 mt-1">Welcome back, John. Here's your social performance.</p>
+</div>
+<div class="flex gap-2">
+<select class="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-light-300" onchange="showToast('Date range updated','success')">
+<option>Last 7 days</option><option>Last 30 days</option><option>Last 90 days</option><option>This year</option>
+</select>
+<button onclick="switchDashTab('posts');setTimeout(()=>document.getElementById('new-post-btn')?.click(),100)" class="btn-primary text-sm font-semibold text-white px-4 py-2 rounded-lg flex items-center gap-2"><i class="fa-solid fa-plus text-xs"></i> New Post</button>
+</div>
+</div>
+<!-- Connected Accounts Bar -->
+<div class="flex gap-3 mb-6 overflow-x-auto pb-2">
+<div class="flex items-center gap-2 px-3 py-2 rounded-xl bg-[#1877F2]/10 border border-[#1877F2]/20 shrink-0"><i class="fa-brands fa-facebook-f text-[#1877F2] text-sm"></i><span class="text-xs text-light-300">Facebook</span><span class="w-1.5 h-1.5 rounded-full bg-success-500"></span></div>
+<div class="flex items-center gap-2 px-3 py-2 rounded-xl bg-[#E4405F]/10 border border-[#E4405F]/20 shrink-0"><i class="fa-brands fa-instagram text-[#E4405F] text-sm"></i><span class="text-xs text-light-300">Instagram</span><span class="w-1.5 h-1.5 rounded-full bg-success-500"></span></div>
+<div class="flex items-center gap-2 px-3 py-2 rounded-xl bg-[#1DA1F2]/10 border border-[#1DA1F2]/20 shrink-0"><i class="fa-brands fa-x-twitter text-[#1DA1F2] text-sm"></i><span class="text-xs text-light-300">X</span><span class="w-1.5 h-1.5 rounded-full bg-success-500"></span></div>
+<div class="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 shrink-0"><i class="fa-brands fa-tiktok text-white text-sm"></i><span class="text-xs text-light-300">TikTok</span><span class="w-1.5 h-1.5 rounded-full bg-success-500"></span></div>
+<div class="flex items-center gap-2 px-3 py-2 rounded-xl bg-[#FF0000]/10 border border-[#FF0000]/20 shrink-0"><i class="fa-brands fa-youtube text-[#FF0000] text-sm"></i><span class="text-xs text-light-300">YouTube</span><span class="w-1.5 h-1.5 rounded-full bg-success-500"></span></div>
+</div>
+<!-- Metric Cards -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+<div class="glass-card glass rounded-xl p-4 bg-white/[.03] card-hover">
+<div class="flex items-center justify-between mb-3"><div class="w-10 h-10 rounded-lg bg-primary-600/15 flex items-center justify-center"><i class="fa-solid fa-eye text-primary-400"></i></div><span class="text-xs text-success-400 font-medium">+12.5%</span></div>
+<div class="text-2xl font-display font-bold text-white">2.4M</div><div class="text-xs text-light-500 mt-1">Total Reach</div>
+</div>
+<div class="glass-card glass rounded-xl p-4 bg-white/[.03] card-hover">
+<div class="flex items-center justify-between mb-3"><div class="w-10 h-10 rounded-lg bg-secondary-600/15 flex items-center justify-center"><i class="fa-solid fa-heart text-secondary-400"></i></div><span class="text-xs text-success-400 font-medium">+8.3%</span></div>
+<div class="text-2xl font-display font-bold text-white">187K</div><div class="text-xs text-light-500 mt-1">Engagement</div>
+</div>
+<div class="glass-card glass rounded-xl p-4 bg-white/[.03] card-hover">
+<div class="flex items-center justify-between mb-3"><div class="w-10 h-10 rounded-lg bg-accent-600/15 flex items-center justify-center"><i class="fa-solid fa-user-plus text-accent-400"></i></div><span class="text-xs text-success-400 font-medium">+23.1%</span></div>
+<div class="text-2xl font-display font-bold text-white">142K</div><div class="text-xs text-light-500 mt-1">Followers</div>
+</div>
+<div class="glass-card glass rounded-xl p-4 bg-white/[.03] card-hover">
+<div class="flex items-center justify-between mb-3"><div class="w-10 h-10 rounded-lg bg-success-500/15 flex items-center justify-center"><i class="fa-solid fa-arrow-pointer text-success-400"></i></div><span class="text-xs text-red-400 font-medium">-2.1%</span></div>
+<div class="text-2xl font-display font-bold text-white">4.2%</div><div class="text-xs text-light-500 mt-1">Avg. CTR</div>
+</div>
+</div>
+<!-- Charts Row -->
+<div class="grid lg:grid-cols-3 gap-4 mb-6">
+<div class="lg:col-span-2 glass-card glass rounded-xl p-5 bg-white/[.03]">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-display font-semibold text-white text-sm">Reach & Engagement Trend</h3>
+<div class="flex gap-1">
+<button class="text-xs px-2.5 py-1 rounded-md bg-primary-600/15 text-primary-400 font-medium">7D</button>
+<button class="text-xs px-2.5 py-1 rounded-md text-light-500 hover:bg-white/5">30D</button>
+<button class="text-xs px-2.5 py-1 rounded-md text-light-500 hover:bg-white/5">90D</button>
+</div>
+</div>
+<div class="chart-container" style="height:250px"><canvas id="overviewLineChart"></canvas></div>
+</div>
+<div class="glass-card glass rounded-xl p-5 bg-white/[.03]">
+<h3 class="font-display font-semibold text-white text-sm mb-4">Reach by Platform</h3>
+<div class="chart-container" style="height:250px"><canvas id="overviewDonutChart"></canvas></div>
+</div>
+</div>
+<!-- Recent Posts -->
+<div class="glass-card glass rounded-xl p-5 bg-white/[.03]">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-display font-semibold text-white text-sm">Recent Posts</h3>
+<button onclick="switchDashTab('posts')" class="text-xs text-primary-400 hover:underline">View All</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-sm">
+<thead><tr class="text-left text-xs text-light-600 border-b border-white/5">
+<th class="pb-3 pr-4">Post</th><th class="pb-3 pr-4 hidden sm:table-cell">Platform</th><th class="pb-3 pr-4">Status</th><th class="pb-3 pr-4 hidden md:table-cell">Scheduled</th><th class="pb-3">Engagement</th>
+</tr></thead>
+<tbody>
+<tr class="border-b border-white/5 hover:bg-white/[.02]">
+<td class="py-3 pr-4 max-w-[200px] truncate text-light-300">Big Oil still uses 9/10-cent pricing...</td>
+<td class="py-3 pr-4 hidden sm:table-cell"><i class="fa-brands fa-facebook-f text-[#1877F2]"></i></td>
+<td class="py-3 pr-4"><span class="text-xs px-2 py-0.5 rounded-full status-published">Published</span></td>
+<td class="py-3 pr-4 hidden md:table-cell text-light-500 text-xs">Jan 15, 10:00 AM</td>
+<td class="py-3 text-light-400 text-xs">2.3K</td>
+</tr>
+<tr class="border-b border-white/5 hover:bg-white/[.02]">
+<td class="py-3 pr-4 max-w-[200px] truncate text-light-300">The 9/10 gas price has lasted for decades...</td>
+<td class="py-3 pr-4 hidden sm:table-cell"><i class="fa-brands fa-x-twitter text-[#1DA1F2]"></i></td>
+<td class="py-3 pr-4"><span class="text-xs px-2 py-0.5 rounded-full status-scheduled">Scheduled</span></td>
+<td class="py-3 pr-4 hidden md:table-cell text-light-500 text-xs">Jan 16, 2:00 PM</td>
+<td class="py-3 text-light-600 text-xs">—</td>
+</tr>
+<tr class="border-b border-white/5 hover:bg-white/[.02]">
+<td class="py-3 pr-4 max-w-[200px] truncate text-light-300">Explaining 9/10 pricing carousel...</td>
+<td class="py-3 pr-4 hidden sm:table-cell"><i class="fa-brands fa-instagram text-[#E4405F]"></i></td>
+<td class="py-3 pr-4"><span class="text-xs px-2 py-0.5 rounded-full status-approved">Approved</span></td>
+<td class="py-3 pr-4 hidden md:table-cell text-light-500 text-xs">Jan 17, 6:00 PM</td>
+<td class="py-3 text-light-600 text-xs">—</td>
+</tr>
+<tr class="hover:bg-white/[.02]">
+<td class="py-3 pr-4 max-w-[200px] truncate text-light-300">Short educational video on 9/10 pricing...</td>
+<td class="py-3 pr-4 hidden sm:table-cell"><i class="fa-brands fa-tiktok text-white"></i></td>
+<td class="py-3 pr-4"><span class="text-xs px-2 py-0.5 rounded-full status-review">In Review</span></td>
+<td class="py-3 pr-4 hidden md:table-cell text-light-500 text-xs">Jan 18, 12:00 PM</td>
+<td class="py-3 text-light-600 text-xs">—</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<!-- CALENDAR TAB -->
+<div id="tab-calendar" class="dash-tab hidden">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+<div>
+<h1 class="font-display text-2xl font-bold text-white">Publishing Calendar</h1>
+<p class="text-sm text-light-500 mt-1">Drag and drop to reschedule posts.</p>
+</div>
+<div class="flex gap-2">
+<div class="flex bg-white/5 rounded-lg p-0.5">
+<button onclick="setCalView('week')" class="cal-view-btn text-xs px-3 py-1.5 rounded-md text-light-500" data-view="week">Week</button>
+<button onclick="setCalView('month')" class="cal-view-btn text-xs px-3 py-1.5 rounded-md bg-primary-600/15 text-primary-400 font-medium" data-view="month">Month</button>
+</div>
+<button onclick="switchDashTab('posts');setTimeout(()=>document.getElementById('new-post-btn')?.click(),100)" class="btn-primary text-sm font-semibold text-white px-4 py-2 rounded-lg flex items-center gap-2"><i class="fa-solid fa-plus text-xs"></i> New Post</button>
+</div>
+</div>
+<!-- Legend -->
+<div class="flex flex-wrap gap-3 mb-4">
+<span class="flex items-center gap-1.5 text-xs text-light-500"><span class="w-2.5 h-2.5 rounded-sm status-draft"></span> Draft</span>
+<span class="flex items-center gap-1.5 text-xs text-light-500"><span class="w-2.5 h-2.5 rounded-sm status-review"></span> Review</span>
+<span class="flex items-center gap-1.5 text-xs text-light-500"><span class="w-2.5 h-2.5 rounded-sm status-approved"></span> Approved</span>
+<span class="flex items-center gap-1.5 text-xs text-light-500"><span class="w-2.5 h-2.5 rounded-sm status-scheduled"></span> Scheduled</span>
+<span class="flex items-center gap-1.5 text-xs text-light-500"><span class="w-2.5 h-2.5 rounded-sm status-published"></span> Published</span>
+<span class="flex items-center gap-1.5 text-xs text-light-500"><span class="w-2.5 h-2.5 rounded-sm status-failed"></span> Failed</span>
+</div>
+<div class="glass-card glass rounded-xl bg-white/[.03] overflow-hidden">
+<div class="flex items-center justify-between px-4 py-3 border-b border-white/5">
+<button onclick="changeCalMonth(-1)" class="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center" aria-label="Previous month"><i class="fa-solid fa-chevron-left text-xs text-light-400"></i></button>
+<span id="cal-month-label" class="font-display font-semibold text-white text-sm">January 2025</span>
+<button onclick="changeCalMonth(1)" class="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center" aria-label="Next month"><i class="fa-solid fa-chevron-right text-xs text-light-400"></i></button>
+</div>
+<div id="calendar-grid" class="p-2"></div>
+</div>
+</div>
+
+<!-- POSTS / CMS TAB -->
+<div id="tab-posts" class="dash-tab hidden">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+<div>
+<h1 class="font-display text-2xl font-bold text-white">Posts</h1>
+<p class="text-sm text-light-500 mt-1">Create, review, and manage your content.</p>
+</div>
+<button id="new-post-btn" onclick="openPostModal()" class="btn-primary text-sm font-semibold text-white px-4 py-2 rounded-lg flex items-center gap-2"><i class="fa-solid fa-plus text-xs"></i> Create Post</button>
+</div>
+<!-- Filters -->
+<div class="flex flex-wrap gap-2 mb-4">
+<button class="text-xs px-3 py-1.5 rounded-lg bg-primary-600/15 text-primary-400 font-medium">All</button>
+<button class="text-xs px-3 py-1.5 rounded-lg text-light-500 hover:bg-white/5">Draft</button>
+<button class="text-xs px-3 py-1.5 rounded-lg text-light-500 hover:bg-white/5">In Review</button>
+<button class="text-xs px-3 py-1.5 rounded-lg text-light-500 hover:bg-white/5">Approved</button>
+<button class="text-xs px-3 py-1.5 rounded-lg text-light-500 hover:bg-white/5">Scheduled</button>
+<button class="text-xs px-3 py-1.5 rounded-lg text-light-500 hover:bg-white/5">Published</button>
+</div>
+<!-- Posts List -->
+<div class="space-y-3" id="posts-list"></div>
+</div>
+
+<!-- CONTENT LIBRARY TAB -->
+<div id="tab-content" class="dash-tab hidden">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+<div><h1 class="font-display text-2xl font-bold text-white">Content Library</h1><p class="text-sm text-light-500 mt-1">All your uploaded media in one place.</p></div>
+<button onclick="showToast('Upload feature ready — drop files here','info')" class="btn-primary text-sm font-semibold text-white px-4 py-2 rounded-lg flex items-center gap-2"><i class="fa-solid fa-cloud-arrow-up text-xs"></i> Upload</button>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+<div class="glass-card glass rounded-xl overflow-hidden bg-white/[.03] card-hover group cursor-pointer"><div class="aspect-square relative overflow-hidden"><img src="https://picsum.photos/seed/lib1/400/400.jpg" alt="Media 1" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" loading="lazy"><div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition flex items-center justify-center"><i class="fa-solid fa-eye text-white opacity-0 group-hover:opacity-100 transition"></i></div></div><div class="p-3"><p class="text-xs text-light-300 truncate">campaign-post-1.jpg</p><p class="text-[10px] text-light-600">2.4 MB &middot; Jan 12</p></div></div>
+<div class="glass-card glass rounded-xl overflow-hidden bg-white/[.03] card-hover group cursor-pointer"><div class="aspect-square relative overflow-hidden"><img src="https://picsum.photos/seed/lib2/400/400.jpg" alt="Media 2" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" loading="lazy"><div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition flex items-center justify-center"><i class="fa-solid fa-eye text-white opacity-0 group-hover:opacity-100 transition"></i></div></div><div class="p-3"><p class="text-xs text-light-300 truncate">instagram-carousel-2.png</p><p class="text-[10px] text-light-600">1.8 MB &middot; Jan 11</p></div></div>
+<div class="glass-card glass rounded-xl overflow-hidden bg-white/[.03] card-hover group cursor-pointer"><div class="aspect-square relative overflow-hidden"><img src="https://picsum.photos/seed/lib3/400/400.jpg" alt="Media 3" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" loading="lazy"><div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition flex items-center justify-center"><i class="fa-solid fa-eye text-white opacity-0 group-hover:opacity-100 transition"></i></div></div><div class="p-3"><p class="text-xs text-light-300 truncate">tiktok-thumbnail.jpg</p><p class="text-[10px] text-light-600">3.1 MB &middot; Jan 10</p></div></div>
+<div class="glass-card glass rounded-xl overflow-hidden bg-white/[.03] card-hover group cursor-pointer"><div class="aspect-square relative overflow-hidden bg-dark-300 flex items-center justify-center"><i class="fa-solid fa-video text-3xl text-light-600"></i><div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition flex items-center justify-center"><i class="fa-solid fa-play text-white opacity-0 group-hover:opacity-100 transition text-lg"></i></div></div><div class="p-3"><p class="text-xs text-light-300 truncate">educational-video.mp4</p><p class="text-[10px] text-light-600">24.6 MB &middot; Jan 9</p></div></div>
+<div class="glass-card glass rounded-xl overflow-hidden bg-white/[.03] card-hover group cursor-pointer"><div class="aspect-square relative overflow-hidden"><img src="https://picsum.photos/seed/lib5/400/400.jpg" alt="Media 5" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" loading="lazy"><div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition flex items-center justify-center"><i class="fa-solid fa-eye text-white opacity-0 group-hover:opacity-100 transition"></i></div></div><div class="p-3"><p class="text-xs text-light-300 truncate">facebook-ad-creative.jpg</p><p class="text-[10px] text-light-600">1.2 MB &middot; Jan 8</p></div></div>
+<div class="glass-card glass rounded-xl overflow-hidden bg-white/[.03] card-hover group cursor-pointer"><div class="aspect-square relative overflow-hidden"><img src="https://picsum.photos/seed/lib6/400/400.jpg" alt="Media 6" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" loading="lazy"><div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition flex items-center justify-center"><i class="fa-solid fa-eye text-white opacity-0 group-hover:opacity-100 transition"></i></div></div><div class="p-3"><p class="text-xs text-light-300 truncate">youtube-banner.png</p><p class="text-[10px] text-light-600">4.7 MB &middot; Jan 7</p></div></div>
+</div>
+</div>
+
+<!-- CAMPAIGNS TAB -->
+<div id="tab-campaigns" class="dash-tab hidden">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+<div><h1 class="font-display text-2xl font-bold text-white">Campaigns</h1><p class="text-sm text-light-500 mt-1">Organize posts into targeted campaigns.</p></div>
+<button onclick="showToast('Campaign creator opening...','info')" class="btn-primary text-sm font-semibold text-white px-4 py-2 rounded-lg flex items-center gap-2"><i class="fa-solid fa-plus text-xs"></i> New Campaign</button>
+</div>
+<div class="grid sm:grid-cols-2 gap-4">
+<div class="glass-card glass rounded-xl p-5 bg-white/[.03] card-hover">
+<div class="flex items-start justify-between mb-4">
+<div><h3 class="font-display font-bold text-white">Cancel910Gas Initiative</h3><p class="text-xs text-light-500 mt-1">Drive subscribers to YouTube channel</p></div>
+<span class="text-xs px-2 py-0.5 rounded-full bg-success-500/15 text-success-400">Active</span>
+</div>
+<div class="grid grid-cols-2 gap-3 mb-4">
+<div class="bg-white/[.03] rounded-lg p-3"><div class="text-lg font-bold text-white">1.2M</div><div class="text-[10px] text-light-600">Reach</div></div>
+<div class="bg-white/[.03] rounded-lg p-3"><div class="text-lg font-bold text-success-400">+47K</div><div class="text-[10px] text-light-600">Referrals</div></div>
+<div class="bg-white/[.03] rounded-lg p-3"><div class="text-lg font-bold text-secondary-400">12.3%</div><div class="text-[10px] text-light-600">Engagement</div></div>
+<div class="bg-white/[.03] rounded-lg p-3"><div class="text-lg font-bold text-accent-400">4/5</div><div class="text-[10px] text-light-600">Posts Live</div></div>
+</div>
+<div class="flex gap-2">
+<span class="w-6 h-6 rounded bg-[#1877F2]/20 flex items-center justify-center"><i class="fa-brands fa-facebook-f text-[#1877F2] text-[10px]"></i></span>
+<span class="w-6 h-6 rounded bg-[#E4405F]/20 flex items-center justify-center"><i class="fa-brands fa-instagram text-[#E4405F] text-[10px]"></i></span>
+<span class="w-6 h-6 rounded bg-[#1DA1F2]/20 flex items-center justify-center"><i class="fa-brands fa-x-twitter text-[#1DA1F2] text-[10px]"></i></span>
+<span class="w-6 h-6 rounded bg-white/10 flex items-center justify-center"><i class="fa-brands fa-tiktok text-white text-[10px]"></i></span>
+<span class="w-6 h-6 rounded bg-[#FF0000]/20 flex items-center justify-center"><i class="fa-brands fa-youtube text-[#FF0000] text-[10px]"></i></span>
+</div>
+</div>
+<div class="glass-card glass rounded-xl p-5 bg-white/[.03] card-hover">
+<div class="flex items-start justify-between mb-4">
+<div><h3 class="font-display font-bold text-white">Product Launch Q1</h3><p class="text-xs text-light-500 mt-1">New feature announcement series</p></div>
+<span class="text-xs px-2 py-0.5 rounded-full bg-yellow-500/15 text-yellow-400">Draft</span>
+</div>
+<div class="grid grid-cols-2 gap-3 mb-4">
+<div class="bg-white/[.03] rounded-lg p-3"><div class="text-lg font-bold text-light-600">—</div><div class="text-[10px] text-light-600">Reach</div></div>
+<div class="bg-white/[.03] rounded-lg p-3"><div class="text-lg font-bold text-light-600">—</div><div class="text-[10px] text-light-600">Referrals</div></div>
+<div class="bg-white/[.03] rounded-lg p-3"><div class="text-lg font-bold text-light-600">—</div><div class="text-[10px] text-light-600">Engagement</div></div>
+<div class="bg-white/[.03] rounded-lg p-3"><div class="text-lg font-bold text-light-600">0/8</div><div class="text-[10px] text-light-600">Posts Live</div></div>
+</div>
+<div class="flex gap-2">
+<span class="w-6 h-6 rounded bg-[#1877F2]/20 flex items-center justify-center"><i class="fa-brands fa-facebook-f text-[#1877F2] text-[10px]"></i></span>
+<span class="w-6 h-6 rounded bg-[#1DA1F2]/20 flex items-center justify-center"><i class="fa-brands fa-x-twitter text-[#1DA1F2] text-[10px]"></i></span>
+<span class="w-6 h-6 rounded bg-[#FF0000]/20 flex items-center justify-center"><i class="fa-brands fa-youtube text-[#FF0000] text-[10px]"></i></span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ANALYTICS TAB -->
+<div id="tab-analytics" class="dash-tab hidden">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+<div><h1 class="font-display text-2xl font-bold text-white">Analytics</h1><p class="text-sm text-light-500 mt-1">Deep dive into your social performance.</p></div>
+<select class="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-light-300"><option>Last 30 days</option><option>Last 7 days</option><option>Last 90 days</option></select>
+</div>
+<!-- Analytics Cards -->
+<div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+<div class="glass-card glass rounded-xl p-4 bg-white/[.03]"><div class="text-xs text-light-500 mb-1">Total Reach</div><div class="text-xl font-display font-bold text-white">2.4M</div><div class="text-xs text-success-400 mt-1">+12.5% vs prev</div></div>
+<div class="glass-card glass rounded-xl p-4 bg-white/[.03]"><div class="text-xs text-light-500 mb-1">Impressions</div><div class="text-xl font-display font-bold text-white">5.8M</div><div class="text-xs text-success-400 mt-1">+9.1% vs prev</div></div>
+<div class="glass-card glass rounded-xl p-4 bg-white/[.03]"><div class="text-xs text-light-500 mb-1">Engagement</div><div class="text-xl font-display font-bold text-white">187K</div><div class="text-xs text-success-400 mt-1">+8.3% vs prev</div></div>
+<div class="glass-card glass rounded-xl p-4 bg-white/[.03]"><div class="text-xs text-light-500 mb-1">Followers</div><div class="text-xl font-display font-bold text-white">142K</div><div class="text-xs text-success-400 mt-1">+23.1% vs prev</div></div>
+<div class="glass-card glass rounded-xl p-4 bg-white/[.03]"><div class="text-xs text-light-500 mb-1">Avg. CTR</div><div class="text-xl font-display font-bold text-white">4.2%</div><div class="text-xs text-red-400 mt-1">-2.1% vs prev</div></div>
+</div>
+<!-- Charts -->
+<div class="grid lg:grid-cols-2 gap-4 mb-6">
+<div class="glass-card glass rounded-xl p-5 bg-white/[.03]">
+<h3 class="font-display font-semibold text-white text-sm mb-4">Engagement Breakdown</h3>
+<div class="chart-container" style="height:280px"><canvas id="engagementBarChart"></canvas></div>
+</div>
+<div class="glass-card glass rounded-xl p-5 bg-white/[.03]">
+<h3 class="font-display font-semibold text-white text-sm mb-4">Audience Growth</h3>
+<div class="chart-container" style="height:280px"><canvas id="growthLineChart"></canvas></div>
+</div>
+</div>
+<div class="grid lg:grid-cols-3 gap-4">
+<div class="glass-card glass rounded-xl p-5 bg-white/[.03]">
+<h3 class="font-display font-semibold text-white text-sm mb-4">Traffic Sources</h3>
+<div class="chart-container" style="height:220px"><canvas id="trafficDonutChart"></canvas></div>
+</div>
+<div class="lg:col-span-2 glass-card glass rounded-xl p-5 bg-white/[.03]">
+<h3 class="font-display font-semibold text-white text-sm mb-4">Best Posting Times (Heatmap)</h3>
+<div id="heatmap-container" class="overflow-x-auto"></div>
+</div>
+</div>
+</div>
+
+<!-- REPORTS TAB -->
+<div id="tab-reports" class="dash-tab hidden">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+<div><h1 class="font-display text-2xl font-bold text-white">Reports</h1><p class="text-sm text-light-500 mt-1">Generate and download performance reports.</p></div>
+<button onclick="generateReport()" class="btn-primary text-sm font-semibold text-white px-4 py-2 rounded-lg flex items-center gap-2"><i class="fa-solid fa-plus text-xs"></i> Generate Report</button>
+</div>
+<!-- Report Builder -->
+<div class="glass-card glass rounded-xl p-5 bg-white/[.03] mb-6">
+<h3 class="font-display font-semibold text-white text-sm mb-4">Report Builder</h3>
+<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+<div><label class="text-xs text-light-500 mb-1 block">Date Range</label><select class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-light-300"><option>Last 7 days</option><option selected>Last 30 days</option><option>Last 90 days</option><option>Custom</option></select></div>
+<div><label class="text-xs text-light-500 mb-1 block">Platform</label><select class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-light-300"><option>All Platforms</option><option>Facebook</option><option>Instagram</option><option>X</option><option>TikTok</option><option>YouTube</option></select></div>
+<div><label class="text-xs text-light-500 mb-1 block">Format</label><select class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-light-300"><option>PDF</option><option>CSV</option></select></div>
+<div><label class="text-xs text-light-500 mb-1 block">Schedule</label><select class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-light-300"><option>One-time</option><option>Weekly</option><option>Monthly</option></select></div>
+</div>
+<div class="flex items-center gap-3">
+<label class="flex items-center gap-2 text-sm text-light-400 cursor-pointer"><input type="checkbox" checked class="rounded border-white/20 bg-white/5 text-primary-600 focus:ring-primary-500"> Email delivery to john@company.com</label>
+</div>
+</div>
+<!-- Generated Reports -->
+<div class="space-y-3" id="reports-list">
+<div class="glass-card glass rounded-xl p-4 bg-white/[.03] flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-red-500/15 flex items-center justify-center"><i class="fa-solid fa-file-pdf text-red-400"></i></div>
+<div><p class="text-sm font-medium text-light-200">Monthly Performance — December 2024</p><p class="text-xs text-light-600">All Platforms &middot; PDF &middot; Generated Jan 1, 2025</p></div>
+</div>
+<div class="flex gap-2"><button onclick="showToast('Downloading PDF...','success')" class="text-xs px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-light-400 transition"><i class="fa-solid fa-download mr-1"></i> Download</button></div>
+</div>
+<div class="glass-card glass rounded-xl p-4 bg-white/[.03] flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-green-500/15 flex items-center justify-center"><i class="fa-solid fa-file-csv text-green-400"></i></div>
+<div><p class="text-sm font-medium text-light-200">Campaign Report — Cancel910Gas</p><p class="text-xs text-light-600">Multi-Platform &middot; CSV &middot; Generated Jan 10, 2025</p></div>
+</div>
+<div class="flex gap-2"><button onclick="showToast('Downloading CSV...','success')" class="text-xs px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-light-400 transition"><i class="fa-solid fa-download mr-1"></i> Download</button></div>
+</div>
+</div>
+</div>
+
+<!-- TEAM TAB -->
+<div id="tab-team" class="dash-tab hidden">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+<div><h1 class="font-display text-2xl font-bold text-white">Team</h1><p class="text-sm text-light-500 mt-1">Manage team members and permissions.</p></div>
+<button onclick="showToast('Invite link copied to clipboard','success')" class="btn-primary text-sm font-semibold text-white px-4 py-2 rounded-lg flex items-center gap-2"><i class="fa-solid fa-user-plus text-xs"></i> Invite Member</button>
+</div>
+<div class="space-y-3">
+<div class="glass-card glass rounded-xl p-4 bg-white/[.03] flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center text-white text-sm font-bold">JD</div>
+<div><p class="text-sm font-medium text-light-200">John Doe</p><p class="text-xs text-light-600">john@company.com</p></div>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-xs px-2.5 py-1 rounded-full bg-primary-600/15 text-primary-400">Admin</span>
+<span class="text-xs text-light-600">Owner</span>
+</div>
+</div>
+<div class="glass-card glass rounded-xl p-4 bg-white/[.03] flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-gradient-to-br from-secondary-500 to-success-500 flex items-center justify-center text-white text-sm font-bold">SK</div>
+<div><p class="text-sm font-medium text-light-200">Sarah Kim</p><p class="text-xs text-light-600">sarah@company.com</p></div>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-xs px-2.5 py-1 rounded-full bg-secondary-600/15 text-secondary-400">Editor</span>
+<button class="text-xs text-light-500 hover:text-red-400 transition">Remove</button>
+</div>
+</div>
+<div class="glass-card glass rounded-xl p-4 bg-white/[.03] flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-gradient-to-br from-accent-500 to-pink-500 flex items-center justify-center text-white text-sm font-bold">MR</div>
+<div><p class="text-sm font-medium text-light-200">Mike Rivera</p><p class="text-xs text-light-600">mike@company.com</p></div>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-xs px-2.5 py-1 rounded-full bg-accent-600/15 text-accent-400">Viewer</span>
+<button class="text-xs text-light-500 hover:text-red-400 transition">Remove</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ACCOUNTS TAB -->
+<div id="tab-accounts" class="dash-tab hidden">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+<div><h1 class="font-display text-2xl font-bold text-white">Connected Accounts</h1><p class="text-sm text-light-500 mt-1">Manage your social platform connections.</p></div>
+</div>
+<div class="grid sm:grid-cols-2 gap-4" id="accounts-grid"></div>
+</div>
+
+<!-- ADMIN PANEL TAB -->
+<div id="tab-admin" class="dash-tab hidden">
+<div class="mb-6"><h1 class="font-display text-2xl font-bold text-white">Admin Panel</h1><p class="text-sm text-light-500 mt-1">System monitoring and management.</p></div>
+<!-- System Health -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+<div class="glass-card glass rounded-xl p-4 bg-white/[.03]"><div class="flex items-center gap-2 mb-2"><span class="w-2 h-2 rounded-full bg-success-500 animate-pulse"></span><span class="text-xs text-light-500">API Server</span></div><div class="text-lg font-bold text-success-400">Healthy</div><div class="text-[10px] text-light-600">Uptime: 99.97%</div></div>
+<div class="glass-card glass rounded-xl p-4 bg-white/[.03]"><div class="flex items-center gap-2 mb-2"><span class="w-2 h-2 rounded-full bg-success-500 animate-pulse"></span><span class="text-xs text-light-500">Database</span></div><div class="text-lg font-bold text-success-400">Healthy</div><div class="text-[10px] text-light-600">Latency: 12ms</div></div>
+<div class="glass-card glass rounded-xl p-4 bg-white/[.03]"><div class="flex items-center gap-2 mb-2"><span class="w-2 h-2 rounded-full bg-success-500 animate-pulse"></span><span class="text-xs text-light-500">Queue Worker</span></div><div class="text-lg font-bold text-success-400">Running</div><div class="text-[10px] text-light-600">Jobs: 142 queued</div></div>
+<div class="glass-card glass rounded-xl p-4 bg-white/[.03]"><div class="flex items-center gap-2 mb-2"><span class="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span><span class="text-xs text-light-500">Cache (Redis)</span></div><div class="text-lg font-bold text-yellow-400">Warning</div><div class="text-[10px] text-light-600">Memory: 82%</div></div>
+</div>
+<div class="grid lg:grid-cols-2 gap-4 mb-6">
+<div class="glass-card glass rounded-xl p-5 bg-white/[.03]">
+<h3 class="font-display font-semibold text-white text-sm mb-4">API Rate Limits (Last Hour)</h3>
+<div class="chart-container" style="height:220px"><canvas id="adminRateChart"></canvas></div>
+</div>
+<div class="glass-card glass rounded-xl p-5 bg-white/[.03]">
+<h3 class="font-display font-semibold text-white text-sm mb-4">Recent Audit Logs</h3>
+<div class="space-y-3 max-h-[200px] overflow-y-auto">
+<div class="flex items-start gap-3 text-xs"><i class="fa-solid fa-circle-check text-success-400 mt-0.5"></i><div><span class="text-light-300">User <strong>john@company.com</strong> connected Facebook account</span><div class="text-light-600 mt-0.5">2 minutes ago</div></div></div>
+<div class="flex items-start gap-3 text-xs"><i class="fa-solid fa-pen text-primary-400 mt-0.5"></i><div><span class="text-light-300">Post #1847 status changed to <strong>Scheduled</strong></span><div class="text-light-600 mt-0.5">15 minutes ago</div></div></div>
+<div class="flex items-start gap-3 text-xs"><i class="fa-solid fa-user-plus text-accent-400 mt-0.5"></i><div><span class="text-light-300">New team member <strong>sarah@company.com</strong> added</span><div class="text-light-600 mt-0.5">1 hour ago</div></div></div>
+<div class="flex items-start gap-3 text-xs"><i class="fa-solid fa-file-export text-secondary-400 mt-0.5"></i><div><span class="text-light-300">Report generated: <strong>December 2024 Performance</strong></span><div class="text-light-600 mt-0.5">3 hours ago</div></div></div>
+<div class="flex items-start gap-3 text-xs"><i class="fa-solid fa-shield-halved text-yellow-400 mt-0.5"></i><div><span class="text-light-300">Rate limit warning for <strong>X API</strong></span><div class="text-light-600 mt-0.5">5 hours ago</div></div></div>
+</div>
+</div>
+</div>
+<!-- User Management -->
+<div class="glass-card glass rounded-xl p-5 bg-white/[.03]">
+<h3 class="font-display font-semibold text-white text-sm mb-4">User Management</h3>
+<div class="overflow-x-auto">
+<table class="w-full text-sm">
+<thead><tr class="text-left text-xs text-light-600 border-b border-white/5"><th class="pb-3 pr-4">User</th><th class="pb-3 pr-4">Plan</th><th class="pb-3 pr-4">Posts</th><th class="pb-3 pr-4">Status</th><th class="pb-3">Actions</th></tr></thead>
+<tbody>
+<tr class="border-b border-white/5"><td class="py-3 pr-4 text-light-300">john@company.com</td><td class="py-3 pr-4"><span class="text-xs px-2 py-0.5 rounded-full bg-primary-600/15 text-primary-400">Professional</span></td><td class="py-3 pr-4 text-light-400">347</td><td class="py-3 pr-4"><span class="w-2 h-2 rounded-full bg-success-500 inline-block"></span></td><td class="py-3"><button class="text-xs text-light-500 hover:text-white transition">Edit</button></td></tr>
+<tr class="border-b border-white/5"><td class="py-3 pr-4 text-light-300">sarah@company.com</td><td class="py-3 pr-4"><span class="text-xs px-2 py-0.5 rounded-full bg-secondary-600/15 text-secondary-400">Starter</span></td><td class="py-3 pr-4 text-light-400">89</td><td class="py-3 pr-4"><span class="w-2 h-2 rounded-full bg-success-500 inline-block"></span></td><td class="py-3"><button class="text-xs text-light-500 hover:text-white transition">Edit</button></td></tr>
+<tr><td class="py-3 pr-4 text-light-300">mike@company.com</td><td class="py-3 pr-4"><span class="text-xs px-2 py-0.5 rounded-full bg-accent-600/15 text-accent-400">Enterprise</span></td><td class="py-3 pr-4 text-light-400">1,204</td><td class="py-3 pr-4"><span class="w-2 h-2 rounded-full bg-yellow-500 inline-block"></span></td><td class="py-3"><button class="text-xs text-light-500 hover:text-white transition">Edit</button></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<!-- SETTINGS TAB -->
+<div id="tab-settings" class="dash-tab hidden">
+<div class="mb-6"><h1 class="font-display text-2xl font-bold text-white">Settings</h1><p class="text-sm text-light-500 mt-1">Configure your workspace preferences.</p></div>
+<div class="max-w-2xl space-y-6">
+<div class="glass-card glass rounded-xl p-5 bg-white/[.03]">
+<h3 class="font-display font-semibold text-white text-sm mb-4">Appearance</h3>
+<div class="flex items-center justify-between">
+<div><p class="text-sm text-light-300">Theme</p><p class="text-xs text-light-600">Switch between dark and light mode</p></div>
+<button onclick="toggleTheme()" class="relative w-12 h-6 rounded-full bg-white/10 transition" id="theme-toggle-btn">
+<span class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-primary-500 transition-transform dark:translate-x-6"></span>
+</button>
+</div>
+</div>
+<div class="glass-card glass rounded-xl p-5 bg-white/[.03]">
+<h3 class="font-display font-semibold text-white text-sm mb-4">Notifications</h3>
+<div class="space-y-4">
+<div class="flex items-center justify-between"><div><p class="text-sm text-light-300">Email Notifications</p></div><input type="checkbox" checked class="rounded border-white/20 bg-white/5 text-primary-600 focus:ring-primary-500"></div>
+<div class="flex items-center justify-between"><div><p class="text-sm text-light-300">Post Published Alerts</p></div><input type="checkbox" checked class="rounded border-white/20 bg-white/5 text-primary-600 focus:ring-primary-500"></div>
+<div class="flex items-center justify-between"><div><p class="text-sm text-light-300">Weekly Report Digest</p></div><input type="checkbox" class="rounded border-white/20 bg-white/5 text-primary-600 focus:ring-primary-500"></div>
+</div>
+</div>
+<div class="glass-card glass rounded-xl p-5 bg-white/[.03]">
+<h3 class="font-display font-semibold text-white text-sm mb-4">Timezone</h3>
+<select class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-light-300"><option>UTC-05:00 Eastern Time</option><option>UTC-06:00 Central Time</option><option>UTC-07:00 Mountain Time</option><option>UTC-08:00 Pacific Time</option><option>UTC+00:00 GMT</option><option>UTC+01:00 CET</option></select>
+</div>
+</div>
+</div>
+
+</main>
+</div>
+</div>
+
+<!-- ==================== POST MODAL ==================== -->
+<div id="post-modal" class="fixed inset-0 z-50 hidden">
+<div class="absolute inset-0 bg-black/60" onclick="closePostModal()"></div>
+<div class="absolute inset-4 sm:inset-8 lg:inset-y-8 lg:inset-x-[15%] bg-dark-300 dark:bg-dark-300 rounded-2xl border border-white/10 overflow-hidden flex flex-col animate-scale-in">
+<div class="flex items-center justify-between px-6 py-4 border-b border-white/5">
+<h2 class="font-display font-bold text-white">Create New Post</h2>
+<button onclick="closePostModal()" class="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center" aria-label="Close"><i class="fa-solid fa-xmark text-light-400"></i></button>
+</div>
+<div class="flex-1 overflow-y-auto p-6">
+<div class="grid lg:grid-cols-3 gap-6">
+<div class="lg:col-span-2 space-y-4">
+<div><label class="text-xs text-light-500 mb-1 block">Title</label><input type="text" id="post-title" placeholder="Post title..." class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-light-200 placeholder-light-600"></div>
+<div><label class="text-xs text-light-500 mb-1 block">Caption</label>
+<div class="bg-white/5 border border-white/10 rounded-lg overflow-hidden">
+<div class="flex gap-1 px-3 py-2 border-b border-white/5">
+<button onclick="document.execCommand('bold')" class="w-7 h-7 rounded hover:bg-white/10 flex items-center justify-center text-light-500 text-xs font-bold" aria-label="Bold">B</button>
+<button onclick="document.execCommand('italic')" class="w-7 h-7 rounded hover:bg-white/10 flex items-center justify-center text-light-500 text-xs italic" aria-label="Italic">I</button>
+<button onclick="document.execCommand('underline')" class="w-7 h-7 rounded hover:bg-white/10 flex items-center justify-center text-light-500 text-xs underline" aria-label="Underline">U</button>
+<button onclick="showToast('AI generating caption...','info')" class="w-7 h-7 rounded hover:bg-white/10 flex items-center justify-center text-yellow-400 text-xs" aria-label="AI Assist"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
+</div>
+<div id="post-caption" contenteditable="true" class="px-4 py-3 min-h-[120px] text-sm text-light-200 focus:outline-none" aria-label="Post caption"></div>
+</div>
+</div>
+<div><label class="text-xs text-light-500 mb-1 block">Hashtags</label><input type="text" id="post-hashtags" placeholder="#socialmedia #marketing" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-light-200 placeholder-light-600"></div>
+<div>
+<label class="text-xs text-light-500 mb-1 block">Media Upload</label>
+<div id="media-drop" class="border-2 border-dashed border-white/10 rounded-lg p-8 text-center cursor-pointer hover:border-primary-600/50 transition" onclick="document.getElementById('media-input').click()" ondragover="event.preventDefault();this.classList.add('border-primary-600/50')" ondragleave="this.classList.remove('border-primary-600/50')" ondrop="event.preventDefault();handleMediaDrop(event)">
+<i class="fa-solid fa-cloud-arrow-up text-2xl text-light-600 mb-2"></i>
+<p class="text-sm text-light-500">Drop images or videos here</p>
+<p class="text-xs text-light-600 mt-1">PNG, JPG, GIF, MP4 up to 100MB</p>
+<input type="file" id="media-input" class="hidden" accept="image/*,video/*" onchange="handleMediaSelect(this)" multiple>
+</div>
+<div id="media-preview" class="flex gap-2 mt-3 flex-wrap"></div>
+</div>
+</div>
+<div class="space-y-4">
+<div><label class="text-xs text-light-500 mb-2 block">Platforms</label>
+<div class="space-y-2">
+<label class="flex items-center gap-3 p-2.5 rounded-lg hover:bg-white/[.03] cursor-pointer transition">
+<input type="checkbox" checked class="rounded border-white/20 bg-white/5 text-primary-600 focus:ring-primary-500"><i class="fa-brands fa-facebook-f text-[#1877F2] w-5 text-center"></i><span class="text-sm text-light-300">Facebook</span>
+</label>
+<label class="flex items-center gap-3 p-2.5 rounded-lg hover:bg-white/[.03] cursor-pointer transition">
+<input type="checkbox" checked class="rounded border-white/20 bg-white/5 text-primary-600 focus:ring-primary-500"><i class="fa-brands fa-instagram text-[#E4405F] w-5 text-center"></i><span class="text-sm text-light-300">Instagram</span>
+</label>
+<label class="flex items-center gap-3 p-2.5 rounded-lg hover:bg-white/[.03] cursor-pointer transition">
+<input type="checkbox" class="rounded border-white/20 bg-white/5 text-primary-600 focus:ring-primary-500"><i class="fa-brands fa-x-twitter text-[#1DA1F2] w-5 text-center"></i><span class="text-sm text-light-300">X</span>
+</label>
+<label class="flex items-center gap-3 p-2.5 rounded-lg hover:bg-white/[.03] cursor-pointer transition">
+<input type="checkbox" class="rounded border-white/20 bg-white/5 text-primary-600 focus:ring-primary-500"><i class="fa-brands fa-tiktok text-white w-5 text-center"></i><span class="text-sm text-light-300">TikTok</span>
+</label>
+<label class="flex items-center gap-3 p-2.5 rounded-lg hover:bg-white/[.03] cursor-pointer transition">
+<input type="checkbox" class="rounded border-white/20 bg-white/5 text-primary-600 focus:ring-primary-500"><i class="fa-brands fa-youtube text-[#FF0000] w-5 text-center"></i><span class="text-sm text-light-300">YouTube</span>
+</label>
+</div>
+</div>
+<div><label class="text-xs text-light-500 mb-1 block">Schedule Date & Time</label><input type="datetime-local" id="post-schedule" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-light-200"></div>
+<div><label class="text-xs text-light-500 mb-1 block">Campaign</label><select class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-light-300"><option>None</option><option>Cancel910Gas Initiative</option><option>Product Launch Q1</option></select></div>
+<div><label class="text-xs text-light-500 mb-1 block">Approval Status</label>
+<select id="post-status" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-light-300">
+<option value="draft">Draft</option><option value="review">Submit for Review</option><option value="approved">Approved</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between px-6 py-4 border-t border-white/5">
+<button onclick="closePostModal()" class="btn-secondary text-sm font-semibold px-5 py-2.5 rounded-lg">Cancel</button>
+<div class="flex gap-2">
+<button onclick="savePost('draft')" class="btn-secondary text-sm font-semibold px-5 py-2.5 rounded-lg">Save Draft</button>
+<button onclick="savePost('scheduled')" class="btn-primary text-sm font-semibold text-white px-5 py-2.5 rounded-lg">Schedule Post</button>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+// ===== STATE =====
+let currentTheme = 'dark';
+let currentDashTab = 'overview';
+let calMonth = 0; // January 2025
+let calYear = 2025;
+let charts = {};
+let posts = [
+  {id:1,title:'Big Oil still uses 9/10-cent pricing',caption:'Big Oil still uses 9/10-cent pricing. It\'s time for change. Join the movement and subscribe to help us reach 3 million supporters.',hashtags:'#cancel910gas #bigoil #consumerrights',platforms:['facebook'],status:'published',scheduled:'2025-01-15T10:00',engagement:'2.3K'},
+  {id:2,title:'The 9/10 gas price has lasted for decades',caption:'The 9/10 gas price has lasted for decades. Let\'s end it together. Subscribe and share.',hashtags:'#910gas #endit #subscribe',platforms:['x'],status:'scheduled',scheduled:'2025-01-16T14:00',engagement:null},
+  {id:3,title:'Explaining 9/10 pricing carousel',caption:'Carousel explaining: What 9/10 pricing is, Why it remains, How consumers can help.',hashtags:'#instagramcarousel #educational #910gas',platforms:['instagram'],status:'approved',scheduled:'2025-01-17T18:00',engagement:null},
+  {id:4,title:'Short educational video on 9/10 pricing',caption:'Short educational video campaign exposing the 9/10 gas pricing trick used by Big Oil.',hashtags:'#tiktok #educational #viral',platforms:['tiktok'],status:'review',scheduled:'2025-01-18T12:00',engagement:null},
+  {id:5,title:'YouTube campaign video',caption:'Full breakdown of the 9/10 cent gas pricing practice and what we can do about it.',hashtags:'#youtube #documentary #cancel910gas',platforms:['youtube'],status:'draft',scheduled:null,engagement:null}
+];
+let accounts = [
+  {id:'facebook',name:'Facebook',icon:'fa-brands fa-facebook-f',color:'#1877F2',connected:true,account:'Cancel910Gas Page',followers:'45.2K',health:'Good',tokenExpiry:'2025-03-15',lastSync:'2 min ago'},
+  {id:'instagram',name:'Instagram',icon:'fa-brands fa-instagram',color:'#E4405F',connected:true,account:'@cancel910gas',followers:'32.8K',health:'Good',tokenExpiry:'2025-03-15',lastSync:'5 min ago'},
+  {id:'x',name:'X (Twitter)',icon:'fa-brands fa-x-twitter',color:'#1DA1F2',connected:true,account:'@cancel910gas',followers:'28.1K',health:'Good',tokenExpiry:'2025-02-28',lastSync:'1 min ago'},
+  {id:'tiktok',name:'TikTok',icon:'fa-brands fa-tiktok',color:'#FFFFFF',connected:true,account:'@cancel910gas',followers:'18.5K',health:'Good',tokenExpiry:'2025-03-01',lastSync:'10 min ago'},
+  {id:'youtube',name:'YouTube',icon:'fa-brands fa-youtube',color:'#FF0000',connected:true,account:'Cancel910Gas',followers:'17.4K',health:'Good',tokenExpiry:'2025-03-20',lastSync:'3 min ago'}
+];
+let calPosts = {
+  '2025-01-06':[{t:'FB: 9/10 pricing intro',s:'published'},{t:'IG: Carousel slide 1',s:'published'}],
+  '2025-01-08':[{t:'X: Thread on gas pricing',s:'published'}],
+  '2025-01-10':[{t:'TT: Short explainer',s:'published'},{t:'YT: Long-form video',s:'published'}],
+  '2025-01-13':[{t:'FB: Join the movement',s:'scheduled'}],
+  '2025-01-15':[{t:'FB: Big Oil 9/10 pricing',s:'scheduled'},{t:'IG: Carousel post',s:'approved'}],
+  '2025-01-16':[{t:'X: End it together',s:'scheduled'}],
+  '2025-01-17':[{t:'IG: 9/10 pricing carousel',s:'approved'}],
+  '2025-01-18':[{t:'TT: Educational video',s:'review'}],
+  '2025-01-20':[{t:'YT: Full breakdown',s:'draft'}],
+  '2025-01-22':[{t:'FB: Update post',s:'draft'},{t:'X: Engagement boost',s:'draft'}],
+  '2025-01-25':[{t:'IG: Story series',s:'draft'}],
+  '2025-01-28':[{t:'TT: Response video',s:'draft'}],
+  '2025-01-30':[{t:'FB: Month wrap-up',s:'draft'}]
+};
+
+// ===== VIEW MANAGEMENT =====
+function showView(view) {
+  document.getElementById('landing-page').classList.toggle('hidden', view !== 'landing');
+  document.getElementById('dashboard-page').classList.toggle('hidden', view !== 'dashboard');
+  if (view === 'dashboard') {
+    document.getElementById('dashboard-page').classList.remove('hidden');
+    document.getElementById('dashboard-page').classList.add('flex');
+    setTimeout(initDashboard, 50);
+  } else {
+    document.getElementById('dashboard-page').classList.add('hidden');
+    document.getElementById('dashboard-page').classList.remove('flex');
+  }
+  window.scrollTo(0, 0);
+}
+
+// ===== THEME =====
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.classList.contains('dark');
+  html.classList.toggle('dark');
+  currentTheme = isDark ? 'light' : 'dark';
+  // Update light mode styles
+  if (!isDark) {
+    document.body.style.backgroundColor = '#F8FAFC';
+    document.body.style.color = '#1E293B';
+  } else {
+    document.body.style.backgroundColor = '#0F172A';
+    document.body.style.color = '#E2E8F0';
+  }
+  // Recreate charts with new theme
+  setTimeout(() => {
+    destroyCharts();
+    if (currentDashTab === 'overview') initOverviewCharts();
+    if (currentDashTab === 'analytics') initAnalyticsCharts();
+    if (currentDashTab === 'admin') initAdminCharts();
+  }, 100);
+}
+
+// ===== MOBILE MENU =====
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobile-menu');
+  const inner = menu.querySelector('.sidebar-mobile');
+  if (menu.classList.contains('hidden')) {
+    menu.classList.remove('hidden');
+    setTimeout(() => inner.style.transform = 'translateX(0)', 10);
+  } else {
+    inner.style.transform = 'translateX(100%)';
+    setTimeout(() => menu.classList.add('hidden'), 300);
+  }
+}
+
+// ===== SIDEBAR =====
+function toggleSidebar() {
+  const sb = document.getElementById('sidebar');
+  const ov = document.getElementById('sidebar-overlay');
+  const open = sb.classList.contains('-translate-x-full');
+  sb.classList.toggle('-translate-x-full', !open);
+  sb.classList.toggle('translate-x-0', open);
+  ov.classList.toggle('hidden', !open);
+}
+
+// ===== DASHBOARD TABS =====
+function switchDashTab(tab) {
+  currentDashTab = tab;
+  document.querySelectorAll('.dash-tab').forEach(t => t.classList.add('hidden'));
+  document.getElementById('tab-' + tab)?.classList.remove('hidden');
+  document.querySelectorAll('.sidebar-item').forEach(i => {
+    i.classList.toggle('active', i.dataset.tab === tab);
+  });
+  // Close mobile sidebar
+  const sb = document.getElementById('sidebar');
+  if (!sb.classList.contains('-translate-x-full') && window.innerWidth < 1024) toggleSidebar();
+  // Init tab-specific content
+  destroyCharts();
+  setTimeout(() => {
+    if (tab === 'overview') initOverviewCharts();
+    if (tab === 'calendar') renderCalendar();
+    if (tab === 'posts') renderPosts();
+    if (tab === 'analytics') initAnalyticsCharts();
+    if (tab === 'accounts') renderAccounts();
+    if (tab === 'admin') initAdminCharts();
+  }, 50);
+}
+
+// ===== TOAST =====
+function showToast(msg, type = 'info') {
+  const c = document.getElementById('toast-container');
+  const colors = {success:'bg-success-500',error:'bg-red-500',info:'bg-primary-600',warning:'bg-yellow-500'};
+  const icons = {success:'fa-check',error:'fa-xmark',info:'fa-info',warning:'fa-exclamation'};
+  const t = document.createElement('div');
+  t.className = `toast flex items-center gap-3 px-4 py-3 rounded-xl ${colors[type]} text-white text-sm font-medium shadow-lg max-w-sm`;
+  t.innerHTML = `<i class="fa-solid ${icons[type]} text-xs"></i><span>${msg}</span>`;
+  c.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .3s'; setTimeout(() => t.remove(), 300); }, 3000);
+}
+
+// ===== CHART HELPERS =====
+function getChartColors() {
+  const dark = document.documentElement.classList.contains('dark');
+  return {
+    grid: dark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)',
+    text: dark ? '#64748B' : '#94A3B8',
+    white: dark ? '#E2E8F0' : '#1E293B',
+    bg: dark ? 'rgba(15,23,42,0)' : 'rgba(248,250,252,0)'
+  };
+}
+function destroyCharts() { Object.values(charts).forEach(c => { if(c) c.destroy(); }); charts = {}; }
+
+// ===== OVERVIEW CHARTS =====
+function initOverviewCharts() {
+  const cc = getChartColors();
+  // Line chart
+  const lineCtx = document.getElementById('overviewLineChart');
+  if (lineCtx) {
+    charts.overviewLine = new Chart(lineCtx, {
+      type:'line',
+      data:{
+        labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+        datasets:[
+          {label:'Reach',data:[320000,380000,350000,420000,480000,390000,440000],borderColor:'#2563EB',backgroundColor:'rgba(37,99,235,0.1)',fill:true,tension:.4,pointRadius:4,pointBackgroundColor:'#2563EB',borderWidth:2},
+          {label:'Engagement',data:[24000,28000,26000,32000,36000,29000,33000],borderColor:'#06B6D4',backgroundColor:'rgba(6,182,212,0.1)',fill:true,tension:.4,pointRadius:4,pointBackgroundColor:'#06B6D4',borderWidth:2}
+        ]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:cc.text,font:{size:11},usePointStyle:true,pointStyle:'circle'}}},scales:{x:{grid:{color:cc.grid},ticks:{color:cc.text,font:{size:11}}},y:{grid:{color:cc.grid},ticks:{color:cc.text,font:{size:11},callback:v=>v>=1e6?(v/1e6)+'M':v>=1e3?(v/1e3)+'K':v}}}}
+    });
+  }
+  // Donut chart
+  const donutCtx = document.getElementById('overviewDonutChart');
+  if (donutCtx) {
+    charts.overviewDonut = new Chart(donutCtx, {
+      type:'doughnut',
+      data:{labels:['Facebook','Instagram','X','TikTok','YouTube'],datasets:[{data:[35,25,18,12,10],backgroundColor:['#1877F2','#E4405F','#1DA1F2','#FFFFFF','#FF0000'],borderWidth:0,hoverOffset:6}]},
+      options:{responsive:true,maintainAspectRatio:false,cutout:'70%',plugins:{legend:{position:'bottom',labels:{color:cc.text,font:{size:10},usePointStyle:true,pointStyle:'circle',padding:12}}}}
+    });
+  }
+}
+
+// ===== ANALYTICS CHARTS =====
+function initAnalyticsCharts() {
+  const cc = getChartColors();
+  // Engagement Bar
+  const barCtx = document.getElementById('engagementBarChart');
+  if (barCtx) {
+    charts.engBar = new Chart(barCtx, {
+      type:'bar',
+      data:{labels:['Facebook','Instagram','X','TikTok','YouTube'],datasets:[
+        {label:'Likes',data:[12400,18900,8200,22100,5600],backgroundColor:'#2563EB',borderRadius:4},
+        {label:'Comments',data:[3200,5600,4100,8900,1200],backgroundColor:'#06B6D4',borderRadius:4},
+        {label:'Shares',data:[1800,3200,6400,15200,800],backgroundColor:'#8B5CF6',borderRadius:4},
+        {label:'Saves',data:[900,2800,1200,4800,600],backgroundColor:'#10B981',borderRadius:4}
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:cc.text,font:{size:10},usePointStyle:true,pointStyle:'circle'}}},scales:{x:{grid:{display:false},ticks:{color:cc.text,font:{size:10}}},y:{grid:{color:cc.grid},ticks:{color:cc.text,font:{size:10},callback:v=>v>=1e3?(v/1e3)+'K':v}}}}
+    });
+  }
+  // Growth Line
+  const growCtx = document.getElementById('growthLineChart');
+  if (growCtx) {
+    charts.growLine = new Chart(growCtx, {
+      type:'line',
+      data:{labels:['Sep','Oct','Nov','Dec','Jan'],datasets:[
+        {label:'Followers',data:[98200,108400,121600,132800,142000],borderColor:'#8B5CF6',backgroundColor:'rgba(139,92,246,0.1)',fill:true,tension:.4,pointRadius:5,pointBackgroundColor:'#8B5CF6',borderWidth:2},
+        {label:'Subscribers',data:[8400,9200,10800,14200,17400],borderColor:'#FF0000',backgroundColor:'rgba(255,0,0,0.05)',fill:true,tension:.4,pointRadius:5,pointBackgroundColor:'#FF0000',borderWidth:2}
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:cc.text,font:{size:10},usePointStyle:true,pointStyle:'circle'}}},scales:{x:{grid:{color:cc.grid},ticks:{color:cc.text,font:{size:10}}},y:{grid:{color:cc.grid},ticks:{color:cc.text,font:{size:10},callback:v=>v>=1e3?(v/1e3)+'K':v}}}}
+    });
+  }
+  // Traffic Donut
+  const trafCtx = document.getElementById('trafficDonutChart');
+  if (trafCtx) {
+    charts.trafDonut = new Chart(trafCtx, {
+      type:'doughnut',
+      data:{labels:['Social Links','Bio Links','Search','Direct','Other'],datasets:[{data:[42,28,15,10,5],backgroundColor:['#2563EB','#06B6D4','#8B5CF6','#10B981','#64748B'],borderWidth:0,hoverOffset:6}]},
+      options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{position:'bottom',labels:{color:cc.text,font:{size:10},usePointStyle:true,pointStyle:'circle',padding:10}}}}
+    });
+  }
+  // Heatmap
+  renderHeatmap();
+}
+
+function renderHeatmap() {
+  const c = document.getElementById('heatmap-container');
+  if (!c) return;
+  const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const hours = ['6am','8am','10am','12pm','2pm','4pm','6pm','8pm','10pm'];
+  const data = [[2,3,5,4,3,6,8,7,4],[1,4,6,5,4,7,9,8,5],[3,5,7,6,5,8,10,9,6],[2,4,5,4,3,6,7,6,3],[1,3,4,3,2,5,6,5,3],[4,6,8,7,6,9,11,10,7],[3,5,7,6,5,8,9,8,5]];
+  const max = 11;
+  let html = '<div class="min-w-[400px]"><div class="grid gap-1" style="grid-template-columns:40px repeat(9,1fr)">';
+  html += '<div></div>';
+  hours.forEach(h => html += `<div class="text-center text-[9px] text-light-600">${h}</div>`);
+  days.forEach((d,di) => {
+    html += `<div class="text-[10px] text-light-600 flex items-center">${d}</div>`;
+    data[di].forEach(v => {
+      const intensity = v / max;
+      const dark = document.documentElement.classList.contains('dark');
+      const bg = dark ? `rgba(37,99,235,${intensity * 0.8})` : `rgba(37,99,235,${intensity * 0.6})`;
+      html += `<div class="h-7 rounded flex items-center justify-center text-[9px] font-medium" style="background:${bg};color:${intensity > 0.5 ? '#fff' : (dark ? '#64748B' : '#94A3B8')}">${v}</div>`;
+    });
+  });
+  html += '</div><div class="flex items-center gap-2 mt-2 text-[9px] text-light-600"><span>Low engagement</span><div class="flex gap-0.5">';
+  for (let i = 0; i <= 4; i++) {
+    const int = i / 4;
+    const bg = dark ? `rgba(37,99,235,${int * 0.8})` : `rgba(37,99,235,${int * 0.6})`;
+    html += `<div class="w-4 h-3 rounded-sm" style="background:${bg}"></div>`;
+  }
+  html += '</div><span>High engagement</span></div></div>';
+  c.innerHTML = html;
+}
+
+// ===== ADMIN CHARTS =====
+function initAdminCharts() {
+  const cc = getChartColors();
+  const ctx = document.getElementById('adminRateChart');
+  if (ctx) {
+    charts.adminRate = new Chart(ctx, {
+      type:'bar',
+      data:{labels:['Facebook','Instagram','X','TikTok','YouTube'],datasets:[
+        {label:'Requests',data:[4200,3800,5100,2900,1800],backgroundColor:'rgba(37,99,235,0.6)',borderRadius:4},
+        {label:'Limit',data:[5000,5000,5000,5000,5000],backgroundColor:'rgba(255,255,255,0.05)',borderRadius:4,borderDash:[4,4]}
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:cc.text,font:{size:10},usePointStyle:true,pointStyle:'circle'}}},scales:{x:{grid:{display:false},ticks:{color:cc.text,font:{size:10}}},y:{grid:{color:cc.grid},ticks:{color:cc.text,font:{size:10}}}}}
+    });
+  }
+}
+
+// ===== CALENDAR =====
+function renderCalendar() {
+  const grid = document.getElementById('calendar-grid');
+  const label = document.getElementById('cal-month-label');
+  if (!grid || !label) return;
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  label.textContent = `${monthNames[calMonth]} ${calYear}`;
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  let html = '<div class="grid grid-cols-7 gap-px">';
+  dayNames.forEach(d => html += `<div class="text-center text-[10px] font-medium text-light-600 py-2">${d}</div>`);
+  for (let i = 0; i < firstDay; i++) html += '<div class="cal-cell bg-white/[.01]"></div>';
+  const today = new Date();
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday = today.getFullYear() === calYear && today.getMonth() === calMonth && today.getDate() === d;
+    const dayPosts = calPosts[dateStr] || [];
+    html += `<div class="cal-cell bg-white/[.02] rounded-lg p-1.5 ${isToday ? 'ring-1 ring-primary-600/50' : ''}">`;
+    html += `<div class="text-xs font-medium ${isToday ? 'text-primary-400' : 'text-light-500'} mb-1">${d}</div>`;
+    dayPosts.forEach(p => {
+      html += `<div class="cal-post status-${p.s}" title="${p.t}" onclick="showToast('${p.t.replace(/'/g,"\\'")}','info')">${p.t}</div>`;
+    });
+    html += '</div>';
+  }
+  const totalCells = firstDay + daysInMonth;
+  const remaining = (7 - (totalCells % 7)) % 7;
+  for (let i = 0; i < remaining; i++) html += '<div class="cal-cell bg-white/[.01]"></div>';
+  html += '</div>';
+  grid.innerHTML = html;
+}
+function changeCalMonth(dir) {
+  calMonth += dir;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  renderCalendar();
+}
+function setCalView(view) {
+  document.querySelectorAll('.cal-view-btn').forEach(b => {
+    b.classList.toggle('bg-primary-600/15', b.dataset.view === view);
+    b.classList.toggle('text-primary-400', b.dataset.view === view);
+    b.classList.toggle('font-medium', b.dataset.view === view);
+    b.classList.toggle('text-light-500', b.dataset.view !== view);
+  });
+  showToast(`${view.charAt(0).toUpperCase()+view.slice(1)} view activated`, 'info');
+}
+
+// ===== POSTS =====
+function renderPosts() {
+  const list = document.getElementById('posts-list');
+  if (!list) return;
+  const platformIcons = {facebook:'fa-brands fa-facebook-f',instagram:'fa-brands fa-instagram',x:'fa-brands fa-x-twitter',tiktok:'fa-brands fa-tiktok',youtube:'fa-brands fa-youtube'};
+  const platformColors = {facebook:'#1877F2',instagram:'#E4405F',x:'#1DA1F2',tiktok:'#FFFFFF',youtube:'#FF0000'};
+  list.innerHTML = posts.map(p => `
+    <div class="glass-card glass rounded-xl p-4 bg-white/[.03] card-hover">
+      <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2 mb-1">
+            ${p.platforms.map(pl => `<i class="${platformIcons[pl]}" style="color:${platformColors[pl]};font-size:12px"></i>`).join('')}
+            <span class="text-xs px-2 py-0.5 rounded-full status-${p.status}">${p.status.charAt(0).toUpperCase()+p.status.slice(1)}</span>
+          </div>
+          <h4 class="text-sm font-semibold text-light-200 truncate">${p.title}</h4>
+          <p class="text-xs text-light-500 truncate mt-0.5">${p.caption}</p>
+        </div>
+        <div class="flex items-center gap-3 shrink-0">
+          ${p.engagement ? `<span class="text-xs text-light-400"><i class="fa-solid fa-heart text-[10px] mr-1"></i>${p.engagement}</span>` : ''}
+          ${p.scheduled ? `<span class="text-xs text-light-600">${new Date(p.scheduled).toLocaleDateString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})}</span>` : ''}
+          <div class="flex gap-1">
+            <button onclick="duplicatePost(${p.id})" class="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center transition" title="Duplicate"><i class="fa-solid fa-copy text-xs text-light-500"></i></button>
+            <button onclick="deletePost(${p.id})" class="w-8 h-8 rounded-lg bg-white/5 hover:bg-red-500/10 flex items-center justify-center transition" title="Delete"><i class="fa-solid fa-trash text-xs text-light-500 hover:text-red-400"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+function duplicatePost(id) {
+  const p = posts.find(x => x.id === id);
+  if (p) {
+    const newP = {...p, id: Date.now(), title: p.title + ' (Copy)', status: 'draft', engagement: null};
+    posts.unshift(newP);
+    renderPosts();
+    showToast('Post duplicated', 'success');
+  }
+}
+function deletePost(id) {
+  posts = posts.filter(x => x.id !== id);
+  renderPosts();
+  showToast('Post deleted', 'error');
+}
+
+// ===== POST MODAL =====
+function openPostModal() {
+  document.getElementById('post-modal').classList.remove('hidden');
+  document.getElementById('media-preview').innerHTML = '';
+  // Set default schedule to next hour
+  const now = new Date();
+  now.setHours(now.getHours() + 1, 0, 0, 0);
+  document.getElementById('post-schedule').value = now.toISOString().slice(0, 16);
+}
+function closePostModal() {
+  document.getElementById('post-modal').classList.add('hidden');
+  document.getElementById('post-title').value = '';
+  document.getElementById('post-caption').innerHTML = '';
+  document.getElementById('post-hashtags').value = '';
+  document.getElementById('media-preview').innerHTML = '';
+}
+function savePost(status) {
+  const title = document.getElementById('post-title').value.trim();
+  const caption = document.getElementById('post-caption').innerText.trim();
+  if (!title) { showToast('Please enter a title', 'warning'); return; }
+  if (!caption) { showToast('Please enter a caption', 'warning'); return; }
+  const checkboxes = document.querySelectorAll('#post-modal input[type="checkbox"]:checked');
+  const platforms = [];
+  checkboxes.forEach(cb => {
+    const label = cb.closest('label');
+    if (label) {
+      const icon = label.querySelector('i');
+      if (icon) {
+        if (icon.classList.contains('fa-facebook-f')) platforms.push('facebook');
+        if (icon.classList.contains('fa-instagram')) platforms.push('instagram');
+        if (icon.classList.contains('fa-x-twitter')) platforms.push('x');
+        if (icon.classList.contains('fa-tiktok')) platforms.push('tiktok');
+        if (icon.classList.contains('fa-youtube')) platforms.push('youtube');
+      }
+    }
+  });
+  if (platforms.length === 0) { showToast('Please select at least one platform', 'warning'); return; }
+  const newPost = {
+    id: Date.now(),
+    title,
+    caption,
+    hashtags: document.getElementById('post-hashtags').value,
+    platforms,
+    status: status === 'draft' ? 'draft' : 'scheduled',
+    scheduled: status === 'scheduled' ? document.getElementById('post-schedule').value : null,
+    engagement: null
+  };
+  posts.unshift(newPost);
+  closePostModal();
+  renderPosts();
+  showToast(status === 'draft' ? 'Draft saved' : 'Post scheduled successfully', 'success');
+}
+function handleMediaSelect(input) {
+  const preview = document.getElementById('media-preview');
+  Array.from(input.files).forEach(file => {
+    if (file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        preview.innerHTML += `<div class="relative w-16 h-16 rounded-lg overflow-hidden group"><img src="${e.target.result}" class="w-full h-full object-cover"><button onclick="this.parentElement.remove()" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 text-white text-[8px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-xmark"></i></button></div>`;
+      };
+      reader.readAsDataURL(file);
+    } else {
+      preview.innerHTML += `<div class="relative w-16 h-16 rounded-lg bg-dark-50 flex items-center justify-center group"><i class="fa-solid fa-video text-light-600"></i><button onclick="this.parentElement.remove()" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 text-white text-[8px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-xmark"></i></button></div>`;
+    }
+  });
+}
+function handleMediaDrop(e) {
+  const dt = e.dataTransfer;
+  if (dt.files.length) {
+    document.getElementById('media-input').files = dt.files;
+    handleMediaSelect(document.getElementById('media-input'));
+  }
+}
+
+// ===== ACCOUNTS =====
+function renderAccounts() {
+  const grid = document.getElementById('accounts-grid');
+  if (!grid) return;
+  grid.innerHTML = accounts.map(a => `
+    <div class="glass-card glass rounded-xl p-5 bg-white/[.03]">
+      <div class="flex items-start justify-between mb-4">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background:${a.color}20"><i class="${a.icon} text-xl" style="color:${a.color}"></i></div>
+          <div><h3 class="font-display font-bold text-white">${a.name}</h3><p class="text-xs text-light-500">${a.account}</p></div>
+        </div>
+        <span class="flex items-center gap-1.5 text-xs ${a.connected ? 'text-success-400' : 'text-light-600'}"><span class="w-1.5 h-1.5 rounded-full ${a.connected ? 'bg-success-500' : 'bg-light-600'}"></span>${a.connected ? 'Connected' : 'Disconnected'}</span>
+      </div>
+      <div class="grid grid-cols-2 gap-3 mb-4">
+        <div class="bg-white/[.03] rounded-lg p-2.5"><div class="text-sm font-bold text-white">${a.followers}</div><div class="text-[10px] text-light-600">Followers</div></div>
+        <div class="bg-white/[.03] rounded-lg p-2.5"><div class="text-sm font-bold text-white">${a.health}</div><div class="text-[10px] text-light-600">Health</div></div>
+      </div>
+      <div class="space-y-2 text-xs">
+        <div class="flex justify-between"><span class="text-light-600">Token Expiry</span><span class="text-light-400">${a.tokenExpiry}</span></div>
+        <div class="flex justify-between"><span class="text-light-600">Last Sync</span><span class="text-light-400">${a.lastSync}</span></div>
+      </div>
+      <div class="flex gap-2 mt-4">
+        ${a.connected ?
+          `<button onclick="disconnectAccount('${a.id}')" class="flex-1 text-xs py-2 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition font-medium">Disconnect</button>
+           <button onclick="showToast('Token refreshed for ${a.name}','success')" class="flex-1 text-xs py-2 rounded-lg bg-white/5 text-light-400 hover:bg-white/10 transition font-medium">Refresh Token</button>` :
+          `<button onclick="connectAccount('${a.id}')" class="flex-1 text-xs py-2 rounded-lg bg-primary-600 text-white hover:bg-primary-700 transition font-medium">Connect ${a.name}</button>`
+        }
+      </div>
+    </div>
+  `).join('');
+}
+function connectAccount(id) {
+  const a = accounts.find(x => x.id === id);
+  if (a) {
+    showToast(`Connecting to ${a.name} via OAuth...`, 'info');
+    setTimeout(() => {
+      a.connected = true;
+      renderAccounts();
+      showToast(`${a.name} connected successfully`, 'success');
+    }, 1500);
+  }
+}
+function disconnectAccount(id) {
+  const a = accounts.find(x => x.id === id);
+  if (a) {
+    a.connected = false;
+    renderAccounts();
+    showToast(`${a.name} disconnected`, 'warning');
+  }
+}
+
+// ===== REPORTS =====
+function generateReport() {
+  const list = document.getElementById('reports-list');
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-US', {month:'long', year:'numeric'});
+  const genDate = now.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
+  const html = `<div class="glass-card glass rounded-xl p-4 bg-white/[.03] flex items-center justify-between animate-slide-up">
+    <div class="flex items-center gap-4">
+      <div class="w-10 h-10 rounded-lg bg-red-500/15 flex items-center justify-center"><i class="fa-solid fa-file-pdf text-red-400"></i></div>
+      <div><p class="text-sm font-medium text-light-200">Performance Report — ${dateStr}</p><p class="text-xs text-light-600">All Platforms &middot; PDF &middot; Generated ${genDate}</p></div>
+    </div>
+    <div class="flex gap-2"><button onclick="showToast('Downloading PDF...','success')" class="text-xs px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-light-400 transition"><i class="fa-solid fa-download mr-1"></i> Download</button></div>
+  </div>`;
+  list.insertAdjacentHTML('afterbegin', html);
+  showToast('Report generated successfully', 'success');
+}
+
+// ===== INIT DASHBOARD =====
+function initDashboard() {
+  switchDashTab('overview');
+}
+
+// ===== SCROLL ANIMATIONS (Landing Page) =====
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('#features .card-hover, #how-it-works .group, #pricing .card-hover').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'all 0.6s cubic-bezier(0.4,0,0.2,1)';
+  observer.observe(el);
+});
+
+// ===== NAV SCROLL EFFECT =====
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('landing-nav');
+  if (nav && !document.getElementById('landing-page').classList.contains('hidden')) {
+    const scroll = window.scrollY;
+    if (scroll > 50) {
+      nav.style.borderBottomColor = 'rgba(255,255,255,0.08)';
+    } else {
+      nav.style.borderBottomColor = 'rgba(255,255,255,0.03)';
+    }
+    lastScroll = scroll;
+  }
+});
+
+// ===== KEYBOARD NAV =====
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closePostModal();
+    const menu = document.getElementById('mobile-menu');
+    if (!menu.classList.contains('hidden')) toggleMobileMenu();
+  }
+});
+</script>
+</body>
+</html>
